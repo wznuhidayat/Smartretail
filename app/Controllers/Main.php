@@ -8,4 +8,7 @@ class Main extends BaseController
 	{
 		return view('admin/dashboard');
 	}
+	public function seller(){
+		return view('seller/seller_view');
+	}
 }

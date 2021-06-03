@@ -8,6 +8,8 @@
   <script src="<?= base_url() ?>/template/assets/js/stisla.js"></script>
 
   <!-- JS Libraies -->
+  <script src="<?= base_url() ?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+  <script src="<?= base_url() ?>/template/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/simpleweather/jquery.simpleWeather.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/chart.js/dist/Chart.min.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
@@ -20,6 +22,7 @@
   <script src="<?= base_url() ?>/template/assets/js/custom.js"></script>
 
   <!-- Page Specific JS File -->
+  <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/index-0.js"></script>
 </body>
 </html>
