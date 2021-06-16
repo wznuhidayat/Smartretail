@@ -34,7 +34,7 @@ class Admin extends Migration
 			],
 			'gender'       => [
 				'type'       => 'ENUM',
-				'constraint' => ['L', 'P'],
+				'constraint' => ['male', 'female'],
 				'null'		=> true,
 			],
 			'img'       => [

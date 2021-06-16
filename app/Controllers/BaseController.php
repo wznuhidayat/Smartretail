@@ -36,8 +36,8 @@ class BaseController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $helpers = [];
-
+	protected $helpers = ['form'];
+	protected $uri;
 	/**
 	 * Constructor.
 	 *
@@ -49,7 +49,9 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
-
+		$this->uri = service('uri');
+		$request = \Config\Services::request();
+		session();
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------

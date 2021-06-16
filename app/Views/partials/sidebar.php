@@ -1,3 +1,4 @@
+<?php $request = \Config\Services::request(); ?>
 <div class="main-sidebar">
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
@@ -7,7 +8,9 @@
       <a href="index.html">St</a>
     </div>
     <ul class="sidebar-menu">
-    <li><a class="nav-link" href="<?= base_url() ?>/main"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
+      <li class="<?= $title == 'Dashboard' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url() ?>/main"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
+      </li>
       <li class="menu-header">Product</li>
       <li class="nav-item dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Layout</span></a>
@@ -44,7 +47,12 @@
         </ul>
       </li>
       <li class="menu-header">Member</li>
-      <li><a class="nav-link" href="<?= base_url() ?>/main/seller"><i class="fas fa-user"></i> <span>Seller</span></a></li>
+      <li class="<?= $request->uri->getSegment(2) == 'seller' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url() ?>/main/seller"><i class="fas fa-user"></i> <span>Seller</span></a>
+      </li>
+      <li class="<?= $request->uri->getSegment(2) == 'admin' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url() ?>/main/admin"><i class="fas fa-user"></i> <span>Admin</span></a>
+      </li>
       <li class="nav-item dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Components</span></a>
         <ul class="dropdown-menu">
