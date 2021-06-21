@@ -8,7 +8,7 @@ class M_admin extends Model
     protected $table = 'admin';
     protected $primaryKey = 'id_admin';
     protected $useTimestamps = true;
-    protected $allowedFields = ['id_admin','nama','email','phone','password','gender','img'];
+    protected $allowedFields = ['id_admin','name','email','phone','password','gender','img'];
 
     public function getAdmin($id = false)
     {

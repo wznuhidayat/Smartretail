@@ -17,7 +17,7 @@ class Product extends Migration
 				'type'           => 'INT',
 				'constraint'     => 8,
 				'unsigned'       => true,
-				'unique'         => true,
+				
 			],
 			'name'       => [
 				'type'       => 'VARCHAR',
