@@ -12,6 +12,9 @@
         <a class="nav-link" href="<?= base_url() ?>/main"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
       </li>
       <li class="menu-header">Product</li>
+      <li class="<?= $request->uri->getSegment(2) == 'product' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url() ?>/main/product"><i class="fas fa-box"></i> <span>Product</span></a>
+      </li>
       <li class="nav-item dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Layout</span></a>
         <ul class="dropdown-menu">
@@ -22,6 +25,7 @@
       </li>
 
       <li class="nav-item dropdown">
+
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Bootstrap</span></a>
         <ul class="dropdown-menu">
           <li><a class="nav-link" href="bootstrap-alert.html">Alert</a></li>

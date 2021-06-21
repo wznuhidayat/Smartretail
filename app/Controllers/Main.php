@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\M_admin;
 use App\Models\M_seller;
+use App\Models\M_product;
 
 
 class Main extends BaseController
@@ -12,6 +13,7 @@ class Main extends BaseController
     {
         $this->M_admin = new M_admin();
         $this->M_seller = new M_seller();
+        $this->M_product = new M_product();
         helper('url', 'form', 'html');
     }
     public function index()
@@ -92,21 +94,21 @@ class Main extends BaseController
                 'validation' => \Config\Services::validation(),
             ];
             return view('admin/administator/edit_admin', $data);
-        } elseif ($url == 'update' && $id != null){
+        } elseif ($url == 'update' && $id != null) {
             $query_admin = $this->M_admin->getAdmin($id);
-            if ($this->request->getPost('email') == $query_admin['email']){
+            if ($this->request->getPost('email') == $query_admin['email']) {
                 if (!$this->validate([
                     'name' => [
                         'rules' => 'required',
-    
+
                     ],
                     'email' => [
                         'rules' => 'required|valid_email',
-    
+
                     ],
                     'passconf' => [
                         'rules' => 'matches[password]',
-    
+
                     ],
                     'gender' => 'required',
 
@@ -115,26 +117,26 @@ class Main extends BaseController
                     $validation = \Config\Services::validation();
                     return redirect()->to('/main/admin/edit/' . $id)->withInput()->with('validation', $validation);
                 }
-            }elseif($this->request->getPost('email') != $query_admin['email']){
-                if ( !$this->validate([
+            } elseif ($this->request->getPost('email') != $query_admin['email']) {
+                if (!$this->validate([
                     'name' => [
                         'rules' => 'required',
-    
+
                     ],
                     'email' => [
                         'rules' => 'required|is_unique[admin.email]|valid_email',
-    
+
                     ],
                     'password' => [
                         'rules' => 'min_length[8]',
-    
+
                     ],
                     'passconf' => [
                         'rules' => 'matches[password]',
-    
+
                     ],
                     'gender' => 'required',
-    
+
                     'image' => 'max_size[image,1024]|mime_in[image,image/jpg,image/jpeg,image/png]'
                 ])) {
                     $validation = \Config\Services::validation();
@@ -166,7 +168,7 @@ class Main extends BaseController
             );
             $this->M_admin->updateAdmin($data, $this->request->getPost('id'));
             return redirect()->to('/main/admin');
-        }elseif ($url == 'delete' && $id != null) {
+        } elseif ($url == 'delete' && $id != null) {
             $item = $this->M_admin->getAdmin($id);
             if ($item['img'] != 'default.png') {
                 unlink('img/admin/' . $item['img']);
@@ -188,7 +190,7 @@ class Main extends BaseController
                 'validation' => \Config\Services::validation()
             ];
             return view('admin/seller/add_seller', $data);
-        }elseif($url == 'save') {
+        } elseif ($url == 'save') {
             if (!$this->validate([
                 'name' => [
                     'rules' => 'required',
@@ -254,21 +256,21 @@ class Main extends BaseController
                 'validation' => \Config\Services::validation(),
             ];
             return view('admin/seller/edit_seller', $data);
-        } elseif ($url == 'update' && $id != null){
+        } elseif ($url == 'update' && $id != null) {
             $query_seller = $this->M_seller->getSeller($id);
-            if ($this->request->getPost('email') == $query_seller['email']){
+            if ($this->request->getPost('email') == $query_seller['email']) {
                 if (!$this->validate([
                     'name' => [
                         'rules' => 'required',
-    
+
                     ],
                     'email' => [
                         'rules' => 'required|valid_email',
-    
+
                     ],
                     'passconf' => [
                         'rules' => 'matches[password]',
-    
+
                     ],
                     'gender' => 'required',
                     'address' => 'required',
@@ -278,27 +280,27 @@ class Main extends BaseController
                     $validation = \Config\Services::validation();
                     return redirect()->to('/main/seller/edit/' . $id)->withInput()->with('validation', $validation);
                 }
-            }elseif($this->request->getPost('email') != $query_seller['email']){
-                if ( !$this->validate([
+            } elseif ($this->request->getPost('email') != $query_seller['email']) {
+                if (!$this->validate([
                     'name' => [
                         'rules' => 'required',
-    
+
                     ],
                     'email' => [
                         'rules' => 'required|is_unique[admin.email]|valid_email',
-    
+
                     ],
                     'password' => [
                         'rules' => 'min_length[8]',
-    
+
                     ],
                     'passconf' => [
                         'rules' => 'matches[password]',
-    
+
                     ],
                     'gender' => 'required',
                     'address' => 'required',
-    
+
                     'image' => 'max_size[image,1024]|mime_in[image,image/jpg,image/jpeg,image/png]'
                 ])) {
                     $validation = \Config\Services::validation();
@@ -325,7 +327,7 @@ class Main extends BaseController
                 'email' => $this->request->getPost('email'),
                 'gender' => $this->request->getPost('gender'),
                 'password' => $pass,
-                'password' => $this->request->getPost('address'),
+                'address' => $this->request->getPost('address'),
                 'img' => $nameImg,
                 'created_at' => $query_seller["created_at"],
             );
@@ -344,5 +346,112 @@ class Main extends BaseController
             'seller' => $this->M_seller->getSeller()
         ];
         return view('admin/seller/seller_view', $data);
+    }
+    //product
+    public function product($url = 'index', $id = null)
+    {
+        if ($url == 'create') {
+            $data = [
+                'title' => 'Add Product',
+                'validation' => \Config\Services::validation()
+            ];
+            return view('admin/product/add_product', $data);
+        } elseif ($url == 'save') {
+            if (!$this->validate([
+                'name' => 'required',
+                'qty' => 'numeric',
+                'price' => 'numeric',
+                'discount' => 'numeric',
+
+            ])) {
+                // return ;
+                $validation = \Config\Services::validation();
+                return redirect()->to('/main/product/create')->withInput()->with('validation', $validation);
+            }
+            // $fileImg = $this->request->getFile('image');
+            // if ($fileImg->getError() == 4) {
+            //     $nameImg = 'default.png';
+            // } else {
+            //     $nameImg = $fileImg->getRandomName();
+            //     $fileImg->move('img/admin/', $nameImg);
+            // }
+            $str = "";
+            $characters = array_merge(range('0', '6'));
+            $max = count($characters) - 1;
+            for ($i = 0; $i < 11; $i++) {
+                $rand = mt_rand(0, $max);
+                $str .= $characters[$rand];
+            }
+            $data = [
+                'id_product' => $str,
+                'id_admin' => 63636642,
+                'name' => $this->request->getPost('name'),
+                'qty' => $this->request->getPost('qty'),
+                'price' => $this->request->getPost('price'),
+                'discount' => $this->request->getPost('discount'),
+                'description' => $this->request->getPost('description'),
+                'created_at' => date('Y/m/d h:i:s'),
+                'updated_at' => date('Y/m/d h:i:s'),
+
+            ];
+            $this->M_product->saveProduct($data);
+            // session()->setFLashdata('success', 'Data berhasil disimpan');
+            return redirect()->to('main/product');
+        } elseif ($url == 'edit' && $id != null) {
+            $query_product = $this->M_product->getProduct($id);
+            $data = [
+                'title' => 'Edit Product',
+                'product' => $query_product,
+                'validation' => \Config\Services::validation(),
+            ];
+            return view('admin/product/edit_product', $data);
+        } elseif ($url == 'update' && $id != null) {
+            $query_product = $this->M_product->getProduct($id);
+            if (!$this->validate([
+                'name' => 'required',
+                'qty' => 'numeric',
+                'price' => 'numeric',
+                'discount' => 'numeric',
+
+            ])) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/main/product/create')->withInput()->with('validation', $validation);
+            }
+            
+            // $fileImg = $this->request->getFile('image');
+            // if ($fileImg->getError() == 4) {
+            //     $nameImg = $this->request->getVar('oldimg');
+            // } else {
+            //     $nameImg = $fileImg->getRandomName();
+            //     $fileImg->move('img/seller', $nameImg);
+            //     if ($this->request->getVar('oldimg') != 'default.png') {
+            //         unlink('img/seller/' . $this->request->getVar('oldimg'));
+            //     }
+            // }
+            $data = array(
+                'name' => $this->request->getPost('name'),
+                'qty' => $this->request->getPost('qty'),
+                'price' => $this->request->getPost('price'),
+                'discount' => $this->request->getPost('discount'),
+                'description' => $this->request->getPost('description'),
+                'created_at' => $query_product["created_at"],
+                'updated_at' => date('Y/m/d h:i:s'),
+
+            );
+            $this->M_product->updateProduct($data, $this->request->getPost('id'));
+            return redirect()->to('/main/product');
+        } elseif ($url == 'delete' && $id != null) {
+            $item = $this->M_product->getproduct($id);
+            // if ($item['img'] != 'default.png') {
+            //     unlink('img/product/' . $item['img']);
+            // }
+            $this->M_product->delete($id);
+            return redirect()->to('/main/product');
+        }
+        $data = [
+            'title' => 'product',
+            'product' => $this->M_product->getProduct()
+        ];
+        return view('admin/product/product_view', $data);
     }
 }
