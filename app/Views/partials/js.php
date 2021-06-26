@@ -24,7 +24,7 @@
   <!-- Page Specific JS File -->
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/index-0.js"></script>
-
+  <script src="<?= base_url() ?>/template/node_modules/sweetalert/dist/sweetalert.min.js"></script>
   <!-- my custome -->
   <script src="<?= base_url() ?>/assets/js/mystyle.js"></script>
 </body>

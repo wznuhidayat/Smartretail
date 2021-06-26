@@ -84,7 +84,9 @@ class Main extends BaseController
 
             ];
             $this->M_admin->saveAdmin($data);
-            // session()->setFLashdata('success', 'Data berhasil disimpan');
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('success', 'Data saved successfully');
+            }
             return redirect()->to('main/admin');
         } elseif ($url == 'edit' && $id != null) {
             $query_admin = $this->M_admin->getAdmin($id);
@@ -167,6 +169,9 @@ class Main extends BaseController
                 'created_at' => $query_admin["created_at"],
             );
             $this->M_admin->updateAdmin($data, $this->request->getPost('id'));
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('edited', 'Data has been changed');
+            }
             return redirect()->to('/main/admin');
         } elseif ($url == 'delete' && $id != null) {
             $item = $this->M_admin->getAdmin($id);
@@ -174,6 +179,7 @@ class Main extends BaseController
                 unlink('img/admin/' . $item['img']);
             }
             $this->M_admin->delete($id);
+           
             return redirect()->to('/main/admin');
         }
         $data = [
@@ -234,7 +240,7 @@ class Main extends BaseController
             }
             $data = [
                 'id_seller' => $str,
-                'id_admin' => 63636642,
+                'id_admin' => 11111111,
                 'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
                 'phone' => $this->request->getPost('phone'),
@@ -246,7 +252,10 @@ class Main extends BaseController
 
             ];
             $this->M_seller->saveSeller($data);
-            // session()->setFLashdata('success', 'Data berhasil disimpan');
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('success', 'data saved successfully');
+            }
+
             return redirect()->to('main/seller');
         } elseif ($url == 'edit' && $id != null) {
             $query_seller = $this->M_seller->getSeller($id);
@@ -332,6 +341,9 @@ class Main extends BaseController
                 'created_at' => $query_seller["created_at"],
             );
             $this->M_seller->updateSeller($data, $this->request->getPost('id'));
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('edited', 'Data has been changed');
+            }
             return redirect()->to('/main/seller');
         } elseif ($url == 'delete' && $id != null) {
             $item = $this->M_seller->getSeller($id);
@@ -384,7 +396,7 @@ class Main extends BaseController
             }
             $data = [
                 'id_product' => $str,
-                'id_admin' => 63636642,
+                'id_admin' => 11111111,
                 'name' => $this->request->getPost('name'),
                 'qty' => $this->request->getPost('qty'),
                 'price' => $this->request->getPost('price'),
@@ -395,7 +407,9 @@ class Main extends BaseController
 
             ];
             $this->M_product->saveProduct($data);
-            // session()->setFLashdata('success', 'Data berhasil disimpan');
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('success', 'Data saved successfully');
+            }
             return redirect()->to('main/product');
         } elseif ($url == 'edit' && $id != null) {
             $query_product = $this->M_product->getProduct($id);
@@ -417,7 +431,7 @@ class Main extends BaseController
                 $validation = \Config\Services::validation();
                 return redirect()->to('/main/product/create')->withInput()->with('validation', $validation);
             }
-            
+
             // $fileImg = $this->request->getFile('image');
             // if ($fileImg->getError() == 4) {
             //     $nameImg = $this->request->getVar('oldimg');
@@ -439,6 +453,9 @@ class Main extends BaseController
 
             );
             $this->M_product->updateProduct($data, $this->request->getPost('id'));
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('edited', 'Data has been changed');
+            }
             return redirect()->to('/main/product');
         } elseif ($url == 'delete' && $id != null) {
             $item = $this->M_product->getproduct($id);

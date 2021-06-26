@@ -26,7 +26,7 @@ class Admin extends Migration
 			],
 			'phone'       => [
 				'type'       => 'INT',
-				'constraint' => '16',
+				'constraint' => 12,
 			],
 			'password'       => [
 				'type'       => 'VARCHAR',

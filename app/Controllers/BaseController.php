@@ -52,9 +52,10 @@ class BaseController extends Controller
 		$this->uri = service('uri');
 		$request = \Config\Services::request();
 		session();
+		$this->db = \Config\Database::connect();
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
-		// E.g.: $this->session = \Config\Services::session();
+		// $this->session = \Config\Services::session();
 	}
 }

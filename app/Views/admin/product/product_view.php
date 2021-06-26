@@ -17,6 +17,7 @@
                             <a href="<?= base_url() ?>/main/product/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Primary</a>
                         </div>
                     </div>
+                    <?= $this->include('massage') ?>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-1">
@@ -33,10 +34,11 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <?php $request = \Config\Services::request(); ?>
+                                <tbody id="<?= $request->uri->getSegment(2); ?>">
                                     <?php $i=1 ?>
                                     <?php foreach ($product as $products) : ?>
-                                        <tr>
+                                        <tr id="<?php echo $products['id_product']; ?>">
                                             <td>
                                                 <?= $i++; ?>
                                             </td>
@@ -50,7 +52,7 @@
                                                 <form action="/main/product/delete/<?= $products['id_product']; ?>" class="d-inline" method="post">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                    <button type="button" class="btn btn-danger btn-sm rm">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -67,10 +69,10 @@
 </div>
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
+        Copyright &copy; 2021 <div class="bullet"></div> Design By <a href="#">Muhammad Wisnu Hidayat</a>
     </div>
     <div class="footer-right">
-        2.3.0
+        1.0.0
     </div>
 </footer>
 </div>
