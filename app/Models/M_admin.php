@@ -27,4 +27,8 @@ class M_admin extends Model
         $query = $this->db->table($this->table)->update($data,['id_admin' => $id]);
         return $query;
     }
+    public function getAdminByEmail($email)
+    {
+        return $this->where(['email' => $email])->first();
+    }
 }

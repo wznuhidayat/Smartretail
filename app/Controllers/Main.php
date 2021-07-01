@@ -87,7 +87,7 @@ class Main extends BaseController
             if ($this->db->affectedRows() > 0) {
                 session()->setFLashdata('success', 'Data saved successfully');
             }
-            return redirect()->to('main/admin');
+            return redirect()->to('/main/admin');
         } elseif ($url == 'edit' && $id != null) {
             $query_admin = $this->M_admin->getAdmin($id);
             $data = [
@@ -256,7 +256,7 @@ class Main extends BaseController
                 session()->setFLashdata('success', 'data saved successfully');
             }
 
-            return redirect()->to('main/seller');
+            return redirect()->to('/main/seller');
         } elseif ($url == 'edit' && $id != null) {
             $query_seller = $this->M_seller->getSeller($id);
             $data = [
@@ -410,7 +410,7 @@ class Main extends BaseController
             if ($this->db->affectedRows() > 0) {
                 session()->setFLashdata('success', 'Data saved successfully');
             }
-            return redirect()->to('main/product');
+            return redirect()->to('/main/product');
         } elseif ($url == 'edit' && $id != null) {
             $query_product = $this->M_product->getProduct($id);
             $data = [
