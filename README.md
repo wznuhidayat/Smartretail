@@ -10,3 +10,4 @@ Bootstrap 4.
 3. then run "php spark db:seeder" and enter.
 4. next type "php spark serve" to run your codeigniter 4.
 5. then type http://localhost:8080/main in your browser. 
+6. enjoy
