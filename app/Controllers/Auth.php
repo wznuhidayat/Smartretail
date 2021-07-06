@@ -11,9 +11,15 @@ class Auth extends BaseController
     {
         $this->M_admin = new M_admin();
     }
-	public function index()
+    public function index(){
+        return redirect()->to(site_url('auth/login'));
+    }
+	public function login()
 	{
-		return view('welcome_message');
+		if(session('id_admin')){
+            return redirect()->to(site_url('main'));
+        }
+        return view('admin/login');
 	}
     public function loginAdmin(){
         return view('auth/login_admin.php');
@@ -30,7 +36,7 @@ class Auth extends BaseController
                     'logged_in'     => TRUE
                 ];
                 session()->set($ses_data);
-                return redirect()->to('/main/admin');
+                return redirect()->to('/main');
             } else {
                 return redirect()->back()->with('error','Your email or password is wrong!');
             }

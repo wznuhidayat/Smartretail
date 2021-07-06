@@ -240,7 +240,7 @@ class Main extends BaseController
             }
             $data = [
                 'id_seller' => $str,
-                'id_admin' => 11111111,
+                'id_admin' => session()->get('id_admin'),
                 'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
                 'phone' => $this->request->getPost('phone'),
@@ -396,7 +396,7 @@ class Main extends BaseController
             }
             $data = [
                 'id_product' => $str,
-                'id_admin' => 11111111,
+                'id_admin' => session()->get('id_admin'),
                 'name' => $this->request->getPost('name'),
                 'qty' => $this->request->getPost('qty'),
                 'price' => $this->request->getPost('price'),
