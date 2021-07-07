@@ -17,6 +17,11 @@
                         <form action="/main/product/save" method="post" enctype="multipart/form-data">
                             <?= csrf_field(); ?>
                             <div class="form-group">
+                                <label >Photos</label><br/>
+                                <input type='file' name='images[]' multiple="" id="gallery-photo-add">
+                                <div class="gallery"></div>
+                            </div>
+                            <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" class="form-control <?= ($validation->hasError('name')) ? 'is-invalid' : '' ?>" name="name" value="<?= old('name'); ?>">
                                 <div class="invalid-feedback">
@@ -44,7 +49,7 @@
                                     <?= $validation->getError('discount'); ?>
                                 </div>
                             </div>
-                           
+
                             <div class="form-group">
                                 <label>Desctiption</label>
                                 <textarea class="form-control" required="" cols="4" name="Desctiption"></textarea>
@@ -52,6 +57,7 @@
                                     <?= $validation->getError('Desctiption'); ?>
                                 </div>
                             </div>
+
                             <div>
                                 <!-- <div class="form-group form-float">
                                     <div class="col-xs-6 col-md-3">

@@ -16,7 +16,7 @@
   <script src="<?= base_url() ?>/template/node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/summernote/dist/summernote-bs4.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
-
+  <!-- <script src="<?= base_url() ?>/template/node_modules/dropzone/dist/min/dropzone.min.js"></script> -->
   <!-- Template JS File -->
   <script src="<?= base_url() ?>/template/assets/js/scripts.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/custom.js"></script>
@@ -25,6 +25,8 @@
   <script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
   <script src="<?= base_url() ?>/template/assets/js/page/index-0.js"></script>
   <script src="<?= base_url() ?>/template/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+  <!-- <script src="<?= base_url() ?>/template/node_modules/image-uploader/dist/image-uploader.min.js"></script> -->
+  <!-- <script src="<?= base_url() ?>/template/assets/js/page/components-multiple-upload.js"></script> -->
   <!-- my custome -->
   <script src="<?= base_url() ?>/assets/js/mystyle.js"></script>
 </body>

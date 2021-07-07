@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\M_admin;
 use App\Models\M_seller;
 use App\Models\M_product;
+use App\Models\M_product_img;
 
 
 class Main extends BaseController
@@ -14,6 +15,7 @@ class Main extends BaseController
         $this->M_admin = new M_admin();
         $this->M_seller = new M_seller();
         $this->M_product = new M_product();
+        $this->M_product_img = new M_product_img();
         helper('url', 'form', 'html');
     }
     public function index()
@@ -179,7 +181,7 @@ class Main extends BaseController
                 unlink('img/admin/' . $item['img']);
             }
             $this->M_admin->delete($id);
-           
+
             return redirect()->to('/main/admin');
         }
         $data = [
@@ -380,13 +382,6 @@ class Main extends BaseController
                 $validation = \Config\Services::validation();
                 return redirect()->to('/main/product/create')->withInput()->with('validation', $validation);
             }
-            // $fileImg = $this->request->getFile('image');
-            // if ($fileImg->getError() == 4) {
-            //     $nameImg = 'default.png';
-            // } else {
-            //     $nameImg = $fileImg->getRandomName();
-            //     $fileImg->move('img/admin/', $nameImg);
-            // }
             $str = "";
             $characters = array_merge(range('0', '6'));
             $max = count($characters) - 1;
@@ -394,6 +389,15 @@ class Main extends BaseController
                 $rand = mt_rand(0, $max);
                 $str .= $characters[$rand];
             }
+            // $fileImg = $this->request->getFile('image');
+            // if ($fileImg->getError() == 4) {
+            //     $nameImg = 'default.png';
+            // } else {
+            //     $nameImg = $fileImg->getRandomName();
+            //     $fileImg->move('img/admin/', $nameImg);
+            // }
+                
+          
             $data = [
                 'id_product' => $str,
                 'id_admin' => session()->get('id_admin'),
@@ -407,6 +411,24 @@ class Main extends BaseController
 
             ];
             $this->M_product->saveProduct($data);
+            $files = $this->request->getFileMultiple('images');
+            if ($this->request->getFileMultiple('images')) {
+
+                foreach ($this->request->getFileMultiple('images') as $file) {
+                    $nameImg = date('ymd').'-'.substr(md5(rand()),0,10);
+                    $file->move('img/product', $nameImg);
+
+                    $data = [
+                        'id_product_img' =>  rand(),
+                        'id_product'  => $str,
+                        'img'  =>  $nameImg,
+                        'created_at'  => date('Y/m/d h:i:s'),
+                        'updated_at'  => date('Y/m/d h:i:s'),
+                    ];
+                    $this->M_product_img->save($data);
+                }
+            }
+
             if ($this->db->affectedRows() > 0) {
                 session()->setFLashdata('success', 'Data saved successfully');
             }
