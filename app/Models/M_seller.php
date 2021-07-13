@@ -27,4 +27,8 @@ class M_seller extends Model
         $query = $this->db->table($this->table)->update($data,['id_seller' => $id]);
         return $query;
     }
+    public function getSellerByEmail($email)
+    {
+        return $this->where(['email' => $email])->first();
+    }
 }

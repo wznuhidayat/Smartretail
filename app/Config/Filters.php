@@ -7,6 +7,7 @@ use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use \App\Filters\Auth;
+use \App\Filters\FilterSeller;
 class Filters extends BaseConfig
 {
 	/**
@@ -20,6 +21,7 @@ class Filters extends BaseConfig
 		'toolbar'  => DebugToolbar::class,
 		'honeypot' => Honeypot::class,
 		'auth' => auth::class,
+		'FilterSeller' => FilterSeller::class,
 	];
 
 	/**
@@ -59,5 +61,5 @@ class Filters extends BaseConfig
 	 *
 	 * @var array
 	 */
-	public $filters = ['auth' => ['before' => ['main/admin','main/seller','main/product']]];
+	public $filters = ['auth' => ['before' => ['main/admin','main/seller','main/product']],'FilterSeller' => ['before' => ['main/admin','main/seller','main/product']]];
 }

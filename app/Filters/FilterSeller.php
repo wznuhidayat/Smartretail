@@ -9,9 +9,9 @@ class Auth implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         // jika user belum login
-        if(! session()->get('id_admin')){
+        if(! session()->get('id_seller')){
             // maka redirct ke halaman login
-            return redirect()->to('/auth/loginAdmin'); 
+            return redirect()->to('/auth/loginSeller'); 
         }
     }
  

@@ -486,6 +486,13 @@ class Main extends BaseController
             // }
             $this->M_product->delete($id);
             return redirect()->to('/main/product');
+        } elseif ($url == 'detail' && $id != null){
+            $query_product = $this->M_product->getProduct($id);
+            $data = [
+                'title' => 'Detail Product',
+                'product' => $query_product
+            ];
+            return view('admin/product/detail_product', $data);
         }
         $data = [
             'title' => 'product',

@@ -49,6 +49,7 @@
                                             <td><?= $products["discount"] ?></td>
                                             <td>
                                                 <a href="/main/product/edit/<?= $products['id_product']; ?>" class="btn btn-info btn-sm">Edit</a>
+                                                <a href="/main/product/detail/<?= $products['id_product']; ?>" class="btn btn-light btn-sm">Detail</a>
                                                 <form action="/main/product/delete/<?= $products['id_product']; ?>" class="d-inline" method="post">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
