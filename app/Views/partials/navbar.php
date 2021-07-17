@@ -212,9 +212,16 @@
                 <i class="fas fa-cog"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
-              <a href="<?= site_url('auth/logout')?>" class="dropdown-item has-icon text-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
-              </a>
+              <?php if(session()->get('role') == 'admin'){ ?>
+                <a href="<?= site_url('auth/logout')?>" class="dropdown-item has-icon text-danger">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              <?php } ?>
+              <?php if(session()->get('role') == 'seller'){ ?>
+                <a href="<?= site_url('auth/logoutSeller')?>" class="dropdown-item has-icon text-danger">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              <?php } ?>
             </div>
           </li>
         </ul>

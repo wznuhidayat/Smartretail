@@ -70,7 +70,7 @@ class Auth extends BaseController
                     'role'     => 'seller'
                 ];
                 session()->set($ses_data);
-                return redirect()->to('/main');
+                return redirect()->to('/seller');
             } else {
                 return redirect()->back()->with('error','Your email or password is wrong!');
             }
@@ -79,5 +79,10 @@ class Auth extends BaseController
         } else {
             return redirect()->back()->with('error','Email is not registered');
         }
+    }
+    public function logoutSeller()
+    {
+        session()->destroy();
+        return redirect()->to('/auth/loginSeller');
     }
 }
