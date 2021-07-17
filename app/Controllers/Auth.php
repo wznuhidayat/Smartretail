@@ -35,7 +35,7 @@ class Auth extends BaseController
                     'name'     => $data['name'],
                     'email'     => $data['email'],
                     'img'   => $data['img'],
-                    'logged_in'     => TRUE
+                    'role'     => 'admin'
                 ];
                 session()->set($ses_data);
                 return redirect()->to('/main');
@@ -67,7 +67,7 @@ class Auth extends BaseController
                     'name'     => $data['name'],
                     'email'     => $data['email'],
                     'img'   => $data['img'],
-                    'logged_in'     => TRUE
+                    'role'     => 'seller'
                 ];
                 session()->set($ses_data);
                 return redirect()->to('/main');

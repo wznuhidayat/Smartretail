@@ -15,7 +15,9 @@
       <li class="<?= $request->uri->getSegment(2) == 'product' ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url() ?>/main/product"><i class="fas fa-box"></i> <span>Product</span></a>
       </li>
-      
+      <li class="<?= $request->uri->getSegment(2) == 'categoryproduct' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url() ?>/main/categoryproduct"><i class="fas fa-clipboard-list"></i> <span>Category Product</span></a>
+      </li>
       <li class="menu-header">Member</li>
       <li class="<?= $request->uri->getSegment(2) == 'seller' ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url() ?>/main/seller"><i class="fas fa-user"></i> <span>Seller</span></a>

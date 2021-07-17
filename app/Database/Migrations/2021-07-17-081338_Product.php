@@ -19,6 +19,11 @@ class Product extends Migration
 				'unsigned'       => true,
 				
 			],
+			'id_category'          => [
+				'type'           => 'INT',
+				'constraint'     => 5,
+				'unsigned'       => true,
+			],
 			'name'       => [
 				'type'       => 'VARCHAR',
 				'constraint' => '30',
@@ -27,14 +32,14 @@ class Product extends Migration
 			'qty'       => [
 				'type'       => 'INT',
 				'constraint' => 11,
-				'unsigned'       => true,
+				
 				'null'	=> true,
 			],
 			'price'       => [
 				'type'       => 'INT',
 				'constraint' => 30,
 				'null'	=> true,
-				'unsigned'       => true,
+				
 			],
 			'discount'       => [
 				'type'       => 'INT',
@@ -58,6 +63,7 @@ class Product extends Migration
 		
 		$this->forge->addKey('id_product', true);
 		$this->forge->addForeignKey('id_admin','admin','id_admin');
+		$this->forge->addForeignKey('id_category','category_product','id_category');
 		$this->forge->createTable('product');
 		
 	}

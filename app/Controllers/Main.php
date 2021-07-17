@@ -6,6 +6,7 @@ use App\Models\M_admin;
 use App\Models\M_seller;
 use App\Models\M_product;
 use App\Models\M_product_img;
+use App\Models\M_cat_product;
 
 
 class Main extends BaseController
@@ -16,6 +17,7 @@ class Main extends BaseController
         $this->M_seller = new M_seller();
         $this->M_product = new M_product();
         $this->M_product_img = new M_product_img();
+        $this->M_cat_product = new M_cat_product();
         helper('url', 'form', 'html');
     }
     public function index()
@@ -500,4 +502,82 @@ class Main extends BaseController
         ];
         return view('admin/product/product_view', $data);
     }
+    public function categoryProduct($url = 'index', $id = null)
+    {
+        if ($url == 'create') {
+            $data = [
+                'title' => 'Add Category Product',
+                'validation' => \Config\Services::validation()
+            ];
+            return view('admin/category_product/add_cat_product', $data);
+        } elseif ($url == 'save') {
+            if (!$this->validate([
+                'name' => [
+                    'rules' => 'required',
+
+                ],
+                
+            ])) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/main/categoryproduct/create')->withInput()->with('validation', $validation);
+            }
+            $str = "";
+            $characters = array_merge(range('0', '6'));
+            $max = count($characters) - 1;
+            for ($i = 0; $i < 6; $i++) {
+                $rand = mt_rand(0, $max);
+                $str .= $characters[$rand];
+            }
+            $data = [
+                'id_category' => $str,
+                'name' => $this->request->getPost('name'),
+                'created_at' => date('Y/m/d h:i:s'),
+
+            ];
+            $this->M_cat_product->saveCatProduct($data);
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('success', 'Data saved successfully');
+            }
+            return redirect()->to('/main/categoryproduct');
+        }elseif ($url == 'delete' && $id != null) {
+            $item = $this->M_cat_product->getcatproduct($id);
+            $this->M_cat_product->delete($id);
+            return redirect()->to('/main/categoryproduct');
+        } elseif ($url == 'edit' && $id != null) {
+            $query_category = $this->M_cat_product->getCatProduct($id);
+            $data = [
+                'title' => 'Edit Category Product',
+                'category' => $query_category,
+                'validation' => \Config\Services::validation(),
+            ];
+            return view('admin/category_product/edit_cat_product', $data);
+        }elseif ($url == 'update' && $id != null) {
+            $query_category = $this->M_cat_product->getCatProduct($id);
+                if (!$this->validate([
+                    'name' => [
+                        'rules' => 'required',
+
+                    ],
+                ])) {
+                    $validation = \Config\Services::validation();
+                    return redirect()->to('/main/categoryproduct/edit/' . $id)->withInput()->with('validation', $validation);
+                }
+            $data = array(
+                'name' => $this->request->getPost('name'),
+                'created_at' => $query_category["created_at"],
+            );
+            $this->M_cat_product->updateCatProduct($data, $this->request->getPost('id'));
+            if ($this->db->affectedRows() > 0) {
+                session()->setFLashdata('edited', 'Data has been changed');
+            }
+            return redirect()->to('/main/categoryproduct');
+        }
+        $data = [
+            'title' => 'category product',
+            'cat_product' => $this->M_cat_product->getCatProduct()
+        ];
+        return view('admin/category_product/cat_product_view', $data);
+    }
+    //menu seller
+    // public function 
 }

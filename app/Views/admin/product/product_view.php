@@ -14,7 +14,7 @@
                     <div class="card-header">
                         <h4>Data Product</h4>
                         <div class="card-header-action">
-                            <a href="<?= base_url() ?>/main/product/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Primary</a>
+                            <a href="<?= base_url() ?>/main/product/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
                         </div>
                     </div>
                     <?= $this->include('massage') ?>

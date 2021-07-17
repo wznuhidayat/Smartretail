@@ -5,15 +5,15 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Seller</h1>
+            <h1>Admin</h1>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Data Seller</h4>
+                        <h4>Data Admin</h4>
                         <div class="card-header-action">
-                            <a href="<?= base_url() ?>/main/admin/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Primary</a>
+                            <a href="<?= base_url() ?>/main/admin/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
                         </div>
                     </div>
                     <?= $this->include('massage') ?>

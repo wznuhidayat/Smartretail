@@ -5,19 +5,19 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Seller</h1>
-            
+            <h1>Category Product</h1>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Data Seller</h4>
+                        <h4>Data Category Product</h4>
                         <div class="card-header-action">
-                            <a href="<?= base_url() ?>/main/seller/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
+                            <a href="<?= base_url() ?>/main/categoryproduct/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
                         </div>
                     </div>
                     <?= $this->include('massage') ?>
+                    <div id="delete"></div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="table-1">
@@ -26,32 +26,24 @@
                                         <th class="text-center">
                                             No
                                         </th>
-                                        <th>Image</th>
-                                        <th>ID Seller</th>
+                                        <th>ID Admin</th>
                                         <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Gender</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <?php $request = \Config\Services::request(); ?>
                                 <tbody id="<?= $request->uri->getSegment(2); ?>">
                                     <?php $i=1 ?>
-                                    <?php foreach ($seller as $sales) : ?>
-                                        <tr id="<?php echo $sales['id_seller']; ?>">
+                                    <?php foreach ($cat_product as $category) : ?>
+                                        <tr id="<?php echo $category['id_category']; ?>">
                                             <td>
                                                 <?= $i++; ?>
                                             </td>
-                                            <td><img src="/img/seller/<?= $sales['img']; ?>" alt="" width="45"></td>
-                                            <td><?= $sales["id_seller"] ?></td>
-                                            <td><?= $sales["name"] ?></td>
-                                            <td><?= $sales["email"] ?></td>
-                                            <td><?= $sales["phone"] ?></td>
-                                            <td><?= $sales["gender"] ?></td>
+                                            <td><?= $category["id_category"] ?></td>
+                                            <td><?= $category["name"] ?></td>
                                             <td>
-                                                <a href="/main/seller/edit/<?= $sales['id_seller']; ?>" class="btn btn-info btn-sm">Edit</a>
-                                                <form action="/main/seller/delete/<?= $sales['id_seller']; ?>" class="d-inline" method="post">
+                                                <a href="/main/categoryproduct/edit/<?= $category['id_category']; ?>" class="btn btn-info btn-sm">Edit</a>
+                                                <form action="/main/categoryproduct/delete/<?= $category['id_category']; ?>" class="d-inline" method="post">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="button" class="btn btn-danger btn-sm rm">Delete</button>
