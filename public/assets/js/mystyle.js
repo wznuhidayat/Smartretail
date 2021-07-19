@@ -67,7 +67,7 @@ $(function() {
               var reader = new FileReader();
 
               reader.onload = function(event) {
-                  $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                  $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview).width('100');
               }
 
               reader.readAsDataURL(input.files[i]);

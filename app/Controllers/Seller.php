@@ -13,7 +13,7 @@ class Seller extends BaseController
 {
     public function __construct()
     {
-
+        $this->M_product = new M_product();
     }
     public function index()
     {
@@ -21,5 +21,13 @@ class Seller extends BaseController
             'title' => 'Dashboard',
         ];
         return view('seller/dashboard', $data);
+    }
+    public function productList()
+    {
+        $data = [
+            'title' => 'list product',
+            'product' => $this->M_product->getProduct()
+        ];
+        return view('seller/product/product_list',$data);
     }
 }

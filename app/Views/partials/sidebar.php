@@ -27,6 +27,11 @@
           <a class="nav-link" href="<?= base_url() ?>/main/categoryproduct"><i class="fas fa-clipboard-list"></i> <span>Category Product</span></a>
         </li>
       <?php } ?>
+      <?php if(session()->get('role') == 'seller'){ ?>
+        <li class="<?= $request->uri->getSegment(2) == 'product' ? 'active' : '' ?>">
+          <a class="nav-link" href="<?= base_url() ?>/seller/productlist"><i class="fas fa-box"></i> <span>List Product</span></a>
+        </li>
+      <?php } ?>
       <?php if(session()->get('role') == 'admin'){ ?>
         <li class="menu-header">Member</li>
         <li class="<?= $request->uri->getSegment(2) == 'seller' ? 'active' : '' ?>">

@@ -403,6 +403,7 @@ class Main extends BaseController
             $data = [
                 'id_product' => $str,
                 'id_admin' => session()->get('id_admin'),
+                'id_category' => 205644,
                 'name' => $this->request->getPost('name'),
                 'qty' => $this->request->getPost('qty'),
                 'price' => $this->request->getPost('price'),
