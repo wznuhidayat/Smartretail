@@ -28,6 +28,12 @@
                                     <?= $validation->getError('name'); ?>
                                 </div>
                             </div>
+
+                            <div class="form-group form-float">
+                                <label for="">Category</label>
+                                <?= form_dropdown('id_category', $category, $selected, ['class' => 'form-control show-tick', 'required' => 'required']) ?>
+
+                            </div>
                             <div class="form-group">
                                 <label>QTY</label>
                                 <input type="number" class="form-control <?= ($validation->hasError('qty')) ? 'is-invalid' : '' ?>" name="qty" value="<?= old('qty'); ?>">

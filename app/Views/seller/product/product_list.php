@@ -15,8 +15,8 @@
                         </div>
                     </div>
                     <div class="article-details">
-                        <div class="article-category"><a href="#">Rp</a>
-                            <a href="#"><?= $products['price']; ?></a>
+                        <div class="article-category"><a href="#" class="text-warning">Rp</a>
+                            <a href="#" class="text-warning"><?= number_format($products['price'],0,',','.') ?></a>
                         </div>
                         <div class="article-title">
                             <h2><a href="#"><?= $products['name']; ?></a></h2>

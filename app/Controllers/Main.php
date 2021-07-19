@@ -367,9 +367,16 @@ class Main extends BaseController
     public function product($url = 'index', $id = null)
     {
         if ($url == 'create') {
+            $query_category = $this->M_cat_product->findAll();
+            $category[null] = '- Select -';
+            foreach ($query_category as $cat) {
+                $category[$cat['id_category']] = '[' . $cat['id_category'] . '] - ' . $cat['name'];
+            }
             $data = [
                 'title' => 'Add Product',
-                'validation' => \Config\Services::validation()
+                'validation' => \Config\Services::validation(),
+                'selected' => null,
+                'category' => $category
             ];
             return view('admin/product/add_product', $data);
         } elseif ($url == 'save') {
@@ -491,10 +498,13 @@ class Main extends BaseController
             return redirect()->to('/main/product');
         } elseif ($url == 'detail' && $id != null){
             $query_product = $this->M_product->getProduct($id);
+            $query_img = $this->M_product_img->getImgWhereId($id);
             $data = [
                 'title' => 'Detail Product',
-                'product' => $query_product
+                'product' => $query_product,
+                'img' => $query_img
             ];
+            
             return view('admin/product/detail_product', $data);
         }
         $data = [

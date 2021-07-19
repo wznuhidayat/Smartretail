@@ -9,4 +9,10 @@ class M_product_img extends Model
     protected $primaryKey = 'id_product_image';
     protected $useTimestamps = true;
     protected $allowedFields = ['id_product_img','id_product','img'];
+
+   
+    public function getImgWhereId($id)
+    {
+        return $this->where(['id_product' => $id])->findAll();
+    }
 }
