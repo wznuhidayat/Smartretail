@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Controllers;
-
+use CodeIgniter\I18n\Time;
 use App\Models\M_admin;
 use App\Models\M_seller;
 use App\Models\M_product;
 use App\Models\M_product_img;
 use App\Models\M_cat_product;
-
 
 class Main extends BaseController
 {
@@ -22,6 +21,7 @@ class Main extends BaseController
     }
     public function index()
     {
+        
         $data = [
             'title' => 'Dashboard',
         ];
@@ -591,4 +591,5 @@ class Main extends BaseController
     }
     //menu seller
     // public function 
+
 }
