@@ -24,10 +24,13 @@ class Seller extends BaseController
     }
     public function productList()
     {
+        $pager = \Config\Services::pager();
         $data = [
             'title' => 'list product',
-            'product' => $this->M_product->getProduct()
+            'product' => $this->M_product->paginate(12,'product'),
+            'pager' => $this->M_product->pager
         ];
+        // dd($data);
         return view('seller/product/product_list',$data);
     }
 }

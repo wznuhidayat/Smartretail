@@ -48,6 +48,7 @@ class BaseController extends Controller
 	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
 	{
 		// Do Not Edit This Line
+		$pager = \Config\Services::pager();
 		parent::initController($request, $response, $logger);
 		$this->uri = service('uri');
 		$request = \Config\Services::request();
