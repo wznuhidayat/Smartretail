@@ -3,15 +3,16 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Dashboard</h1>
+            <h1>List Product</h1>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    
+        <?= form_open(); ?>
+            <div class="input-group mb-3">
+                <input type="text" name="keyword" class="form-control" placeholder="Search" aria-label="">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit" >Button</button>
                 </div>
             </div>
-        </div>
+        <?= form_close(); ?>
         <div class="row">
             <?php foreach ($product as $products) : ?>
                 <div class="col-12 col-md-3 col-lg-3">
@@ -35,7 +36,7 @@
                     </article>
                 </div>
             <?php endforeach ?>
-            <?= $pager->links('product','product_pagination'); ?>
+            <?= $pager->links('product', 'product_pagination'); ?>
         </div>
     </section>
 </div>

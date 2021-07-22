@@ -21,7 +21,6 @@ class Main extends BaseController
     }
     public function index()
     {
-        
         $data = [
             'title' => 'Dashboard',
         ];

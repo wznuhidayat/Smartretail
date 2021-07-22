@@ -27,4 +27,9 @@ class M_product extends Model
         $query = $this->db->table($this->table)->update($data,['id_product' => $id]);
         return $query;
     }
+    public function search($keyword)
+    {
+        $query = $this->table($this->table)->like('name', $keyword);
+        return $query;
+    }
 }

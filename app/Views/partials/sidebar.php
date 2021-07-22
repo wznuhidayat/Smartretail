@@ -28,7 +28,7 @@
         </li>
       <?php } ?>
       <?php if(session()->get('role') == 'seller'){ ?>
-        <li class="<?= $request->uri->getSegment(2) == 'product' ? 'active' : '' ?>">
+        <li class="<?= $request->uri->getSegment(2) == 'productlist' ? 'active' : '' ?>">
           <a class="nav-link" href="<?= base_url() ?>/seller/productlist"><i class="fas fa-box"></i> <span>List Product</span></a>
         </li>
       <?php } ?>
