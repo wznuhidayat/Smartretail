@@ -79,4 +79,6 @@ $(function() {
   $('#gallery-photo-add').on('change', function() {
       imagesPreview(this, 'div.gallery');
   });
+  // var element = document.getElementById("productimg");
+  // element.classList.add("h-100");
 });

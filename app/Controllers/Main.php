@@ -409,7 +409,7 @@ class Main extends BaseController
             $data = [
                 'id_product' => $str,
                 'id_admin' => session()->get('id_admin'),
-                'id_category' => 205644,
+                'id_category' => $this->request->getPost('id_category'),
                 'name' => $this->request->getPost('name'),
                 'qty' => $this->request->getPost('qty'),
                 'price' => $this->request->getPost('price'),
@@ -443,11 +443,18 @@ class Main extends BaseController
             }
             return redirect()->to('/main/product');
         } elseif ($url == 'edit' && $id != null) {
+            $query_category = $this->M_cat_product->findAll();
+            $category[null] = '- Select -';
+            foreach ($query_category as $cat) {
+                $category[$cat['id_category']] = '[' . $cat['id_category'] . '] - ' . $cat['name'];
+            }
             $query_product = $this->M_product->getProduct($id);
             $data = [
                 'title' => 'Edit Product',
                 'product' => $query_product,
                 'validation' => \Config\Services::validation(),
+                'selected' => $query_product['id_category'],
+                'category' => $category
             ];
             return view('admin/product/edit_product', $data);
         } elseif ($url == 'update' && $id != null) {
@@ -475,6 +482,7 @@ class Main extends BaseController
             // }
             $data = array(
                 'name' => $this->request->getPost('name'),
+                'id_category' => $this->request->getPost('id_category'),
                 'qty' => $this->request->getPost('qty'),
                 'price' => $this->request->getPost('price'),
                 'discount' => $this->request->getPost('discount'),
@@ -489,10 +497,12 @@ class Main extends BaseController
             }
             return redirect()->to('/main/product');
         } elseif ($url == 'delete' && $id != null) {
-            $item = $this->M_product->getproduct($id);
-            // if ($item['img'] != 'default.png') {
-            //     unlink('img/product/' . $item['img']);
-            // }
+            // $item = $this->M_product->getproduct($id);
+            $images = $this->M_product_img->getImgWhereId($id);
+
+            foreach($images as $imgs){
+                unlink('img/product/' . $imgs['img']);
+            }
             $this->M_product->delete($id);
             return redirect()->to('/main/product');
         } elseif ($url == 'detail' && $id != null){
@@ -510,6 +520,7 @@ class Main extends BaseController
             'title' => 'product',
             'product' => $this->M_product->getProduct()
         ];
+        
         return view('admin/product/product_view', $data);
     }
     public function categoryProduct($url = 'index', $id = null)

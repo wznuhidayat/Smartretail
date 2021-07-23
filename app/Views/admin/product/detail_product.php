@@ -16,23 +16,23 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6">
                                 <div id="carouselExampleIndicators3" class="carousel slide" data-ride="carousel">
                                     <ol class="carousel-indicators">
-                                        <li data-target="#carouselExampleIndicators3" data-slide-to="0" class=""></li>
-                                        <li data-target="#carouselExampleIndicators3" data-slide-to="1" class="active"></li>
-                                        <li data-target="#carouselExampleIndicators3" data-slide-to="2" class=""></li>
+                                       
+                                        <?php foreach($img as $key => $images){
+                                                $active = ($key ==0) ? 'active' : '';
+                                                echo '<li data-target="#carouselExampleIndicators3" data-slide-to="'.$key.'" class="'.$active.'"></li>';
+                                        } ?>
                                     </ol>
                                     <div class="carousel-inner">
-                                        <div class="carousel-item">
-                                            <img class="d-block w-100" src="<?= base_url() ?>/template/assets/img/news/img01.jpg" alt="First slide">
-                                        </div>
-                                        <div class="carousel-item active">
-                                            <img class="d-block w-100" src="<?= base_url() ?>/template/assets/img/news/img07.jpg" alt="Second slide">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img class="d-block w-100" src="<?= base_url() ?>/template/assets/img/news/img08.jpg" alt="Third slide">
-                                        </div>
+                                        
+                                        <?php foreach($img as $key => $images){
+                                             $active = ($key == 0) ? 'active' : '';
+                                             echo '<div class="carousel-item '.$active.'">
+                                             <img id="productimg" class="d-block w-100 h-100" src="'.base_url().'/img/product/'.$images['img'].'">
+                                         </div>';
+                                        } ?>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleIndicators3" role="button" data-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -45,12 +45,13 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <h4><?= $product['name']; ?></h4>
+                                
+                                <h4><?= $product['product_name']; ?></h4>
                                 <h5>Rp <?= number_format($product['price'],0,',','.'); ?></h5>
                                 <p class="mt-4 mb-4">Paragraph — Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
                                 <div class="text-dark mb-2"><b>QTY : </b> 12</div>
-                                <div class="text-secondary mt-3"><b>Created : </b><?= $product['created_at']; ?></div>
+                                <div class="text-secondary mt-3"><b>Created : </b><?= $product['product_created_at']; ?></div>
                                 <div class="text-secondary "><b>Updated : </b> <?= $product['updated_at']; ?></div>
 
                             </div>
