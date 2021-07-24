@@ -15,11 +15,11 @@ class M_product extends Model
         if($id === false){
             return $this->orderBy('created_at','desc')->findAll();
         }else{
-            $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
-                        ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
-                        ->Where(['id_product' => $id])->get()->getRowArray();
-            // return $this->where(['id_product' => $id])->first();
-            return $query;
+            // $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
+            //             ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
+            //             ->Where(['id_product' => $id])->get()->getRowArray();
+            return $this->where(['id_product' => $id])->first();
+            // return $query;
         }   
     }
     public function saveProduct($data)
@@ -36,14 +36,12 @@ class M_product extends Model
         $query = $this->table($this->table)->like('name', $keyword);
         return $query;
     }
-    // public function getProductJoin($id = false)
-    // {
-    //     if($id === false){
-    //         return $this->db->table($this->table)->orderBy('product.created_at','desc')
-    //         ->join('category_product','category_product.id_category='.$this->table.'.id_category')
-    //         ->get()->getResultArray();
-    //     }else{
-    //         return $this->where(['id_product' => $id])->first();
-    //     }   
-    // }
+    public function detail($id)
+    {
+        $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
+                        ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
+                        ->Where(['id_product' => $id])->get()->getRowArray();
+            
+            return $query;
+    }
 }

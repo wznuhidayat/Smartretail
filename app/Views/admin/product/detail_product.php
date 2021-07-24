@@ -48,12 +48,12 @@
                                 
                                 <h4><?= $product['product_name']; ?></h4>
                                 <h5>Rp <?= number_format($product['price'],0,',','.'); ?></h5>
-                                <p class="mt-4 mb-4">Paragraph — Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                                <div class="text-dark mb-2"><b>QTY : </b> 12</div>
+                                <p class="mt-4 mb-4"><?= $product['description']; ?></p>
+                                <div class="text-dark mb-2"><b>QTY : </b> <?= $product['qty']; ?></div>
+                                <div class="text-dark mb-2"><b>Discount : </b> <?= $product['discount']; ?></div>
                                 <div class="text-secondary mt-3"><b>Created : </b><?= $product['product_created_at']; ?></div>
                                 <div class="text-secondary "><b>Updated : </b> <?= $product['updated_at']; ?></div>
-
+                                
                             </div>
                         </div>
                     </div>

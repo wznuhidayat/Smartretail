@@ -420,8 +420,10 @@ class Main extends BaseController
 
             ];
             $this->M_product->saveProduct($data);
-            $files = $this->request->getFileMultiple('images');
-            if ($this->request->getFileMultiple('images')) {
+            $files = $this->request->getFiles('images');
+            
+            
+            if (count(array_filter($_FILES['images']['name'])) != 0 ) {
 
                 foreach ($this->request->getFileMultiple('images') as $file) {
                     $nameImg = date('ymd').'-'.substr(md5(rand()),0,10);
@@ -506,7 +508,7 @@ class Main extends BaseController
             $this->M_product->delete($id);
             return redirect()->to('/main/product');
         } elseif ($url == 'detail' && $id != null){
-            $query_product = $this->M_product->getProduct($id);
+            $query_product = $this->M_product->detail($id);
             $query_img = $this->M_product_img->getImgWhereId($id);
             $data = [
                 'title' => 'Detail Product',
