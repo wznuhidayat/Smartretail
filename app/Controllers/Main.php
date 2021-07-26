@@ -431,12 +431,12 @@ class Main extends BaseController
 
                     $data = [
                         'id_product_img' =>  rand(),
-                        'id_product'  => $str,
+                        'product_id'  => $str,
                         'img'  =>  $nameImg,
-                        'created_at'  => date('Y/m/d h:i:s'),
-                        'updated_at'  => date('Y/m/d h:i:s'),
+                        'create_at'  => date('Y/m/d h:i:s'),
+                        'update_at'  => date('Y/m/d h:i:s'),
                     ];
-                    $this->M_product_img->save($data);
+                    $this->M_product_img->saveImg($data);
                 }
             }
 
@@ -508,14 +508,13 @@ class Main extends BaseController
             $this->M_product->delete($id);
             return redirect()->to('/main/product');
         } elseif ($url == 'detail' && $id != null){
-            $query_product = $this->M_product->detail($id);
+            $query_product = $this->M_product->getProducts($id);
             $query_img = $this->M_product_img->getImgWhereId($id);
             $data = [
                 'title' => 'Detail Product',
                 'product' => $query_product,
                 'img' => $query_img
             ];
-            
             return view('admin/product/detail_product', $data);
         }
         $data = [

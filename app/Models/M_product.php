@@ -36,12 +36,18 @@ class M_product extends Model
         $query = $this->table($this->table)->like('name', $keyword);
         return $query;
     }
-    public function detail($id)
+    public function getProducts($id = false)
     {
-        $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
+        if($id === false){
+            return $this->db->table($this->table)->orderBy(''.$this->table.'.created_at','desc')
+            ->join('product_img','product_img.product_id='.$this->table.'.id_product','left')
+            ->get()->getResultArray();
+        }else{
+            $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
                         ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
                         ->Where(['id_product' => $id])->get()->getRowArray();
             
             return $query;
+        }
     }
 }

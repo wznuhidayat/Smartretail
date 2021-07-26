@@ -14,7 +14,7 @@ class Productimg extends Migration
 				'constraint'     => 8,
 				'unsigned'       => true,
 			],
-			'id_product'          => [
+			'product_id'          => [
 				'type'           => 'VARCHAR',
 				'constraint'     => '11',
 			],
@@ -22,18 +22,18 @@ class Productimg extends Migration
 				'type'       => 'VARCHAR',
 				'constraint' => '255',
 			],
-			'created_at'       => [
+			'create_at'       => [
 				'type'       => 'DATETIME',
 				'null'		=> true,
 			],
-			'updated_at'       => [
+			'update_at'       => [
 				'type'       => 'DATETIME',
 				'null'		=> true,
 			],
 			
 		]);
 		$this->forge->addKey('id_product_img', true);
-		$this->forge->addForeignKey('id_product','product','id_product','CASCADE','CASCADE');
+		$this->forge->addForeignKey('product_id','product','id_product','CASCADE','CASCADE');
 		$this->forge->createTable('product_img');
 	}
 
