@@ -54,7 +54,7 @@
 
                             <div class="form-group">
                                 <label>Desctiption</label>
-                                <textarea class="form-control" required="" cols="4" name="Desctiption"><?= $product['description']; ?></textarea>
+                                <textarea class="form-control" required="" cols="4" data-height="150" style="height: 150px;" name="Desctiption"><?= $product['description']; ?></textarea>
                                 <div class="invalid-feedback">
                                     <?= $validation->getError('Desctiption'); ?>
                                 </div>

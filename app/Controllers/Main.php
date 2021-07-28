@@ -519,9 +519,8 @@ class Main extends BaseController
         }
         $data = [
             'title' => 'product',
-            'product' => $this->M_product->getProduct()
+            'product' => $this->M_product->getProducts()
         ];
-        
         return view('admin/product/product_view', $data);
     }
     public function categoryProduct($url = 'index', $id = null)

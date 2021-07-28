@@ -14,6 +14,7 @@ class M_product extends Model
     {
         if($id === false){
             return $this->orderBy('created_at','desc')->findAll();
+          
         }else{
             // $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')
             //             ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
@@ -39,8 +40,8 @@ class M_product extends Model
     public function getProducts($id = false)
     {
         if($id === false){
-            return $this->db->table($this->table)->orderBy(''.$this->table.'.created_at','desc')
-            ->join('product_img','product_img.product_id='.$this->table.'.id_product','left')
+            return $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')->orderBy(''.$this->table.'.created_at','desc')
+            ->join('category_product', 'category_product.id_category='.$this->table.'.id_category')
             ->get()->getResultArray();
         }else{
             $query = $this->db->table($this->table)->select('* , '.$this->table.'.name as product_name ,'.$this->table.'.created_at as product_created_at  ')

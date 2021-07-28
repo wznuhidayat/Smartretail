@@ -28,9 +28,9 @@
                                         </th>
                                         <th>ID Product</th>
                                         <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Gender</th>
+                                        <th>Category</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -43,10 +43,10 @@
                                                 <?= $i++; ?>
                                             </td>
                                             <td><?= $products["id_product"] ?></td>
+                                            <td><?= $products["product_name"] ?></td>
                                             <td><?= $products["name"] ?></td>
                                             <td><?= $products["qty"] ?></td>
                                             <td><?= $products["price"] ?></td>
-                                            <td><?= $products["discount"] ?></td>
                                             <td>
                                                 <a href="/main/product/edit/<?= $products['id_product']; ?>" class="btn btn-info btn-sm">Edit</a>
                                                 <a href="/main/product/detail/<?= $products['id_product']; ?>" class="btn btn-light btn-sm">Detail</a>

@@ -5,6 +5,7 @@ use App\Models\M_admin;
 use App\Models\M_seller;
 use App\Models\M_product;
 use App\Models\M_product_img;
+use App\Models\M_product_sold;
 use App\Models\M_cat_product;
 
 
@@ -14,6 +15,7 @@ class Seller extends BaseController
     {
         $this->M_product = new M_product();
         $this->M_product_img = new M_product_img();
+        $this->M_product_sold = new M_product_sold();
         helper('url', 'form', 'html');
     }
     public function index()
@@ -34,11 +36,32 @@ class Seller extends BaseController
                 'img' => $query_img
             ];
             return view('admin/product/detail_product', $data);
-        }elseif($url == 'sold' && $id != null){
+        }elseif($url == 'sold'){
             $data = [
                 'title' => 'Product Sold'
             ];
             return view('seller/product/product_sold', $data);
+        }elseif($url == 'save'){
+            
+            $str = "";
+            $characters = array_merge(range('0', '6'));
+            $max = count($characters) - 1;
+            for ($i = 0; $i < 8; $i++) {
+                $rand = mt_rand(0, $max);
+                $str .= $characters[$rand];
+            }
+            $data = array(
+                'id_sold'        => $str,
+                'product_id'       => $this->request->getPost('id_product'),
+                'seller_id' => $this->request->getPost('id_seller'),
+                'qty' => $this->request->getPost('qty'),
+                'note' => $this->request->getPost('note'),
+                'created_at'  => date('Y/m/d h:i:s'),
+                'updated_at'  => date('Y/m/d h:i:s'),
+            );
+            // dd($data);
+            $this->M_product_sold->saveProductSold($data);
+            return redirect()->to('/seller/productlist');
         }
         $pager = \Config\Services::pager();
 
@@ -46,15 +69,16 @@ class Seller extends BaseController
         if ($keyword) {
             $product = $this->M_product->search($keyword);
         }else{
-            $product = $this->M_product->join('product_img','product_img.product_id=product.id_product','left');
+            $product = $this->M_product;
         }
 
         $data = [
             'title' => 'list product',
             'product' => $product->paginate(12,'product'),
-            'pager' => $this->M_product->pager
+            'pager' => $this->M_product->pager,
+            'img' => $this->M_product_img->findAll()
         ];
-        dd($this->M_product->join('product_img','product_img.product_id=product.id_product','left')->paginate(12,'product'));
+        // dd($data);
         return view('/seller/product/product_list',$data);
     }
     public function dataexample()

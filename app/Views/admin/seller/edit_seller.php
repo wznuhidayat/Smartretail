@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-group">
                   <label>Address</label>
-                  <textarea class="form-control" required="" cols="4" name="address"><?= $seller['address']; ?></textarea>
+                  <textarea class="form-control" required="" cols="4" data-height="150" style="height: 150px;" name="address"><?= $seller['address']; ?></textarea>
                   <div class="invalid-feedback">
                     <?= $validation->getError('address'); ?>
                   </div>
