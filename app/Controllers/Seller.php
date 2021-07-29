@@ -14,6 +14,7 @@ class Seller extends BaseController
     public function __construct()
     {
         $this->M_product = new M_product();
+        $this->M_seller = new M_seller();
         $this->M_product_img = new M_product_img();
         $this->M_product_sold = new M_product_sold();
         helper('url', 'form', 'html');
@@ -81,8 +82,17 @@ class Seller extends BaseController
         // dd($data);
         return view('/seller/product/product_list',$data);
     }
-    public function dataexample()
+    public function sold($url = 'index', $id = null)
     {
-        dd($this->request->getPost('keyword'));
+        if($url == 'delete' && $id != null){
+            $this->M_product_sold->delete($id);
+            return redirect()->to('/seller/sold');
+        }
+        $data = [
+            'title' => 'Products sold',
+            'sold' => $this->M_product_sold->getProductsSold(session()->get('id_seller'))
+        ];
+        // dd($data);
+        return view('/seller/product/products_sold',$data);
     }
 }

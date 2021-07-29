@@ -31,6 +31,9 @@
         <li class="<?= $request->uri->getSegment(2) == 'productlist' ? 'active' : '' ?>">
           <a class="nav-link" href="<?= base_url() ?>/seller/productlist"><i class="fas fa-box"></i> <span>List Product</span></a>
         </li>
+        <li class="<?= $request->uri->getSegment(2) == 'sold' ? 'active' : '' ?>">
+          <a class="nav-link" href="<?= base_url() ?>/seller/sold/<?= session()->get('id_seller') ?>"><i class="fas fa-exchange-alt"></i> <span>Products Sold</span></a>
+        </li>
       <?php } ?>
       <?php if(session()->get('role') == 'admin'){ ?>
         <li class="menu-header">Member</li>

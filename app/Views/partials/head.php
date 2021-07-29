@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/weathericons/css/weather-icons.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/weathericons/css/weather-icons-wind.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/summernote/dist/summernote-bs4.css">
+ 
   <!-- <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/imag  e-uploader/dist/image-uploader.min.css"> -->
   <!-- <link rel="stylesheet" href="<?= base_url() ?>/template/node_modules/dropzone/dist/min/dropzone.min.css"> -->
   <!-- Template CSS -->

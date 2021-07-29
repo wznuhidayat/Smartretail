@@ -18,7 +18,6 @@
                 <div class="col-12 col-md-3 col-lg-3">
                     <article class="article article-style-c">
                         <?php foreach ($img as $imgs => $images) : ?>
-
                             <?php if ($images['product_id'] == $products['id_product']) { ?>
                                 <div class="article-header">
                                     <div class="article-image" data-background="<?= base_url() ?>/img/product/<?= $images['img'] ?>" style="background-image: url(&quot;<?= base_url() ?>/template/assets/img/news/img13.jpg&quot;);">
