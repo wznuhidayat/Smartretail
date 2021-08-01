@@ -57,10 +57,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Desctiption</label>
-                                <textarea class="form-control" required="" cols="4" name="Desctiption" data-height="150" style="height: 150px;"></textarea>
+                                <label>description</label>
+                                <textarea class="form-control" required="" cols="4" name="description" data-height="150" style="height: 150px;"></textarea>
                                 <div class="invalid-feedback">
-                                    <?= $validation->getError('Desctiption'); ?>
+                                    <?= $validation->getError('description'); ?>
                                 </div>
                             </div>
 

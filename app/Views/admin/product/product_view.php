@@ -20,7 +20,9 @@
                     <?= $this->include('massage') ?>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped" id="table-1">
+                        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                            <table class="table table-striped" id="product-table">
+                            <?= csrf_field() ?>
                                 <thead>
                                     <tr>
                                         <th class="text-center">
@@ -36,29 +38,7 @@
                                 </thead>
                                 <?php $request = \Config\Services::request(); ?>
                                 <tbody id="<?= $request->uri->getSegment(2); ?>">
-                                    <?php $i=1 ?>
-                                    <?php foreach ($product as $products) : ?>
-                                        <tr id="<?php echo $products['id_product']; ?>">
-                                            <td>
-                                                <?= $i++; ?>
-                                            </td>
-                                            <td><?= $products["id_product"] ?></td>
-                                            <td><?= $products["product_name"] ?></td>
-                                            <td><?= $products["name"] ?></td>
-                                            <td><?= $products["qty"] ?></td>
-                                            <td><?= $products["price"] ?></td>
-                                            <td>
-                                                <a href="/main/product/edit/<?= $products['id_product']; ?>" class="btn btn-info btn-sm">Edit</a>
-                                                <a href="/main/product/detail/<?= $products['id_product']; ?>" class="btn btn-light btn-sm">Detail</a>
-                                                <form action="/main/product/delete/<?= $products['id_product']; ?>" class="d-inline" method="post">
-                                                    <?= csrf_field(); ?>
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="button" class="btn btn-danger btn-sm rm">Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-
-                                    <?php endforeach ?>
+                                    
                                 </tbody>
                             </table>
                         </div>

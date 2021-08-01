@@ -50,7 +50,7 @@
                                                 <form action="/seller/sold/delete/<?= $solds['id_sold']; ?>" class="d-inline" method="post">
                                                     <?= csrf_field(); ?>
                                                     <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="button" class="btn btn-danger btn-sm rm">Delete</button>
+                                                    <button type="button" class="btn btn-danger btn-sm rm-seller">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -1,6 +1,7 @@
 <?php 
 namespace App\Models;
 
+use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\Model;
 
 class M_product extends Model
@@ -9,7 +10,11 @@ class M_product extends Model
     protected $primaryKey = 'id_product';
     protected $useTimestamps = true;
     protected $allowedFields = ['id_product','id_admin','name','qty','price','discount','description'];
+    protected $request;
+    protected $db;
+    protected $dt;
 
+   
     public function getProduct($id = false)
     {
         if($id === false){
@@ -51,4 +56,6 @@ class M_product extends Model
             return $query;
         }
     }
+
+
 }

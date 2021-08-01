@@ -54,6 +54,85 @@ $(".rm").click(function () {
     });
 });
 
+$(".rm-product").click(function () {
+  var id = $(this).attr("value");
+  var segment = $(this).parents("tbody").attr("id");
+  swal({
+    title: 'Are you sure?',
+    text: 'Once deleted, you will not be able to recover this imaginary file!',
+    icon: 'warning',
+    buttons: true,
+    dangerMode: true,
+  })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          url: '/main/' + segment + '/delete/' + id,
+          type: 'DELETE',
+          error: function () {
+            swal("Failed", "Data gagal di hapus", "error");
+          },
+          success: function (data) {
+            $("#del").show();
+            // $("#delete").prepend("#del");
+
+            $("#" + id).remove();
+            swal('Poof! Your imaginary file has been deleted!', {
+              icon: 'success',
+            });
+            document.getElementById('deleted').style.display = 'block';
+
+          }
+        });
+        // swal('Poof! Your imaginary file has been deleted!', {
+        //   icon: 'success',
+        // });
+      } else {
+        swal('Your imaginary file is safe!');
+      }
+    });
+});
+
+$(".rm-seller").click(function () {
+  var id = $(this).parents("tr").attr("id");
+  var segment = $(this).parents("tbody").attr("id");
+  swal({
+    title: 'Are you sure?',
+    text: 'Once deleted, you will not be able to recover this imaginary file!',
+    icon: 'warning',
+    buttons: true,
+    dangerMode: true,
+  })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          url: '/seller/' + segment + '/delete/' + id,
+          type: 'DELETE',
+          error: function () {
+            swal("Failed", "Data gagal di hapus", "error");
+          },
+          success: function (data) {
+            $("#del").show();
+            // $("#delete").prepend("#del");
+
+            $("#" + id).remove();
+            swal('Poof! Your imaginary file has been deleted!', {
+              icon: 'success',
+            });
+            document.getElementById('deleted').style.display = 'block';
+
+          }
+        });
+        // swal('Poof! Your imaginary file has been deleted!', {
+        //   icon: 'success',
+        // });
+      } else {
+        swal('Your imaginary file is safe!');
+      }
+    });
+});
+
+
 // $('.input-images-1').imageUploader();
 
 $(function () {
@@ -119,3 +198,4 @@ $(document).ready(function () {
   })
 })
 
+//datatable

@@ -7,6 +7,8 @@ use App\Models\M_seller;
 use App\Models\M_product;
 use App\Models\M_product_img;
 use App\Models\M_cat_product;
+use App\Models\Product_Datatable;
+use Config\Services;
 
 class Main extends BaseController
 {
@@ -516,7 +518,7 @@ class Main extends BaseController
                 'img' => $query_img
             ];
             return view('admin/product/detail_product', $data);
-        }
+        } 
         $data = [
             'title' => 'product',
             'product' => $this->M_product->getProducts()
@@ -599,7 +601,51 @@ class Main extends BaseController
         ];
         return view('admin/category_product/cat_product_view', $data);
     }
-    //menu seller
-    // public function 
+    
+    // data table list server side 
+    public function listProduct()
+    {
+        $csrfName = csrf_token();
+        $csrfHash = csrf_hash();
+
+        $request = Services::request();
+        $datatable = new Product_Datatable($request);
+
+        if ($request->getMethod(true) === 'POST') {
+            $lists = $datatable->getDatatables();
+            $data = [];
+            $no = $request->getPost('start');
+
+            foreach ($lists as $list) {
+
+                $no++;
+                $row = [];
+                $btnEdit = "<a href=\"/main/product/edit/".$list->id_product."\" class=\"btn btn-info btn-sm\">Edit</a>";
+                $btnDetail = "<a href=\"/main/product/detail/".$list->id_product."\" class=\"btn btn-light btn-sm\">Detail</a>";
+                $btnDelete = " <form action=\"/main/product/delete/".$list->id_product."\" class=\"d-inline\" method=\"post\">
+                ". csrf_field()." 
+                <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
+                <button type=\"submit\" class=\"btn btn-danger btn-sm rm\">Delete</button>
+            </form>";
+                $row[] = $no;
+                $row[] = $list->id_product;
+                $row[] = $list->name;
+                $row[] = $list->id_category;
+                $row[] = $list->qty;
+                $row[] = "Rp. ".number_format($list->price, 0, ',', '.');
+                $row[] = $btnEdit.$btnDetail.$btnDelete;
+                $data[] = $row;
+            }
+
+            $output = [
+                'draw' => $request->getPost('draw'),
+                'recordsTotal' => $datatable->countAll(),
+                'recordsFiltered' => $datatable->countFiltered(),
+                'data' => $data
+            ];
+            $output[$csrfName] = $csrfHash;
+            echo json_encode($output);
+        }
+    }
 
 }
