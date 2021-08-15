@@ -23,8 +23,14 @@
         <li class="<?= $request->uri->getSegment(2) == 'product' ? 'active' : '' ?>">
           <a class="nav-link" href="<?= base_url() ?>/main/product"><i class="fas fa-box"></i> <span>Product</span></a>
         </li>
+        <li class="<?= $request->uri->getSegment(2) == 'sales' ? 'active' : '' ?>">
+          <a class="nav-link" href="<?= base_url() ?>/main/sales"><i class="fas fa-clipboard-list"></i> <span>Sales data</span></a>
+        </li>
         <li class="<?= $request->uri->getSegment(2) == 'categoryproduct' ? 'active' : '' ?>">
-          <a class="nav-link" href="<?= base_url() ?>/main/categoryproduct"><i class="fas fa-clipboard-list"></i> <span>Category Product</span></a>
+          <a class="nav-link" href="<?= base_url() ?>/main/categoryproduct"><i class="fas fa-list-alt"></i> <span>Category Product</span></a>
+        </li>
+        <li class="<?= $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
+          <a class="nav-link" href="<?= base_url() ?>/main/monthly"><i class="fas fa-clipboard-list"></i> <span>Monthly Data</span></a>
         </li>
       <?php } ?>
       <?php if(session()->get('role') == 'seller'){ ?>

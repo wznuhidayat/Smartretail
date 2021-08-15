@@ -12,7 +12,7 @@ class ProductSold extends Migration
 			'id_sold'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'product_id'          => [
 				'type'           => 'VARCHAR',
@@ -21,7 +21,7 @@ class ProductSold extends Migration
 			'seller_id'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'qty'       => [
 				'type'       => 'INT',

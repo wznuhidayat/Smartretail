@@ -16,17 +16,17 @@ class Product extends Migration
 			'id_admin'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 				
 			],
 			'id_category'          => [
 				'type'           => 'INT',
 				'constraint'     => 5,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'name'       => [
 				'type'       => 'VARCHAR',
-				'constraint' => '30',
+				'constraint' => '50',
 				'null'	=> true,
 			],
 			'qty'       => [

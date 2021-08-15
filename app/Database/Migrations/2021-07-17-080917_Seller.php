@@ -12,12 +12,12 @@ class Seller extends Migration
 			'id_seller'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'id_admin'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 				
 			],
 			'name'       => [

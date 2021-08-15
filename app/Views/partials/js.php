@@ -52,6 +52,29 @@
       }, ],
     });
   });
+  $(document).ready(function() {
+    var table = $('#sales-table').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "order": [],
+      "ajax": {
+        "url": "<?= site_url('main/listsales') ?>",
+        "type": "POST",
+        "data": {"csrf_test_name" :  $('input[name=csrf_test_name]').val()},
+        "data": function(data){
+          data.csrf_test_name = $('input[name=csrf_test_name]').val()
+        },
+        'dataSrc' :function(response){
+         $('input[name=csrf_test_name]').val(response.csrf_test_name)
+         return response.data;
+        }
+      },
+      "columnDefs": [{
+        "targets": [],
+        "orderable": false,
+      }, ],
+    });
+  });
 </script>
 </body>
 

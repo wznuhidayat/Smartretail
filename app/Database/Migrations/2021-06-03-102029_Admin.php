@@ -12,7 +12,7 @@ class Admin extends Migration
 			'id_admin'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'name'       => [
 				'type'       => 'VARCHAR',

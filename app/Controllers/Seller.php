@@ -72,6 +72,7 @@ class Seller extends BaseController
         }else{
             $product = $this->M_product;
         }
+       
 
         $data = [
             'title' => 'list product',

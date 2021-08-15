@@ -12,7 +12,7 @@ class CategoryProduct extends Migration
 			'id_category'          => [
 				'type'           => 'INT',
 				'constraint'     => 5,
-				'unsigned'       => true,
+				// 'unsigned'       => true,
 			],
 			'name'       => [
 				'type'       => 'VARCHAR',
