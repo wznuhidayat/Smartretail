@@ -32,6 +32,14 @@
         <li class="<?= $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
           <a class="nav-link" href="<?= base_url() ?>/main/monthly"><i class="fas fa-clipboard-list"></i> <span>Monthly Data</span></a>
         </li>
+        <li class="nav-item dropdown <?= $request->uri->getSegment(2) == 'analysis' ? 'active' : '' ?>">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-chart-bar"></i> <span>Analysis</span></a>
+                <ul class="dropdown-menu" style="display: block;">
+                  <li><a class="nav-link" href="<?= base_url() ?>/main/analysis/ann">Neural Network</a></li>
+                  <li><a class="nav-link" href="layout-transparent.html">Prediction Result</a></li>
+                  <li><a class="nav-link" href="layout-top-navigation.html">Data Testing</a></li>
+                </ul>
+              </li>
       <?php } ?>
       <?php if(session()->get('role') == 'seller'){ ?>
         <li class="<?= $request->uri->getSegment(2) == 'productlist' ? 'active' : '' ?>">

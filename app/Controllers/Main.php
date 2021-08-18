@@ -19,24 +19,29 @@ class Main extends BaseController
 {
     public $numEpoh = 100;
     public $LR = 0.3;
-    public $numHL;
+    public $numHL = 6;
     public $mseStandard = 0.001;
-    public $bias= [1,1,1,1];
+    public $biasv = [1, 1, 1, 1,1,1];
+    public $biasw = [1];
     public $product = [
-        [4, 13, 6, 17],
-        [2, 12, 4, 18],
-        [0, 14, 2, 10],
-        [1, 11, 0, 12]
+        // [4, 13, 6, 17],
+        // [2, 12, 4, 18],
+        // [0, 14, 2, 10],
+        // [1, 11, 0, 12]
     ];
 
-    public $target = array(7, 21, 13, 12);
+    public $target = array(
+        // 7, 21, 13, 12
+    );
     public $bobotv = [
-        [-0.53, -0.1, 0.22, 0.83],
-        [-0.84, 0.76, 0.62, 0.35],
-        [-0.14, 0.79, 0.57, -0.26],
-        [0.75, -0.95, 0.33, -0.7]
+        // [-0.53, -0.1, 0.22, 0.83],
+        // [-0.84, 0.76, 0.62, 0.35],
+        // [-0.14, 0.79, 0.57, -0.26],
+        // [0.75, -0.95, 0.33, -0.7]
     ];
-    public $bobotw = array(0.5, 0.73, -0.94, 0.47);
+    public $bobotw = array(
+        // 0.5, 0.73, -0.94, 0.47
+    );
 
     public $HLIn = array();
     public $HLOut = array();
@@ -749,7 +754,7 @@ class Main extends BaseController
     }
     public function monthly($url = 'index')
     {
-        if($url == 'init'){
+        if ($url == 'init') {
             $this->numEpoh = $this->request->getPost('epooch');
             $this->LR = $this->request->getPost('lr');
             $this->mseStandard = $this->request->getPost('mse');
@@ -758,7 +763,7 @@ class Main extends BaseController
         }
         $data = [
             'title' => 'monthly',
-            'monthly_data' => $this->M_product_sold->getMonthly()   
+            'monthly_data' => $this->M_product_sold->getMonthly()
             // 'mse' => $this->mseOut,
             // 'bobotv' => $this->bobotv,
             // 'bobotw' => $this->bobotw,
@@ -767,9 +772,91 @@ class Main extends BaseController
         ];
         return view('admin/monthly/monthly_view', $data);
     }
+
+    public function Analysis($url = 'index')
+    {
+        if ($url == 'ann') {
+            $data = [
+                'title' => 'Neural Network',
+                'monthly_data' => $this->M_product_sold->getMonthly()
+                // 'mse' => $this->mseOut,
+                // 'bobotv' => $this->bobotv,
+                // 'bobotw' => $this->bobotw,
+                // 'bias' => $this->bias,
+                // 'mseStd' => $this->mseStandard,
+            ];
+            return view('admin/analysis/neural_network_view', $data);
+        }elseif($url == 'resultann'){
+
+            $monthly_data = $this->M_product_sold->getMonthly();
+            $target = $this->M_product_sold->getTarget();
+            // dd($monthly_data);
+            
+                foreach($monthly_data as $data){
+                    $restData = array(
+                        $data['product_id'] ,
+                        $data['name'],
+                        intval($data['jan'] == null ? 0 : $data['jan']),
+                        intval($data['feb'] == null ? 0 : $data['feb']),
+                        intval($data['mar'] == null ? 0 : $data['mar']),
+                        intval($data['apr'] == null ? 0 : $data['apr']),
+                        intval($data['mei'] == null ? 0 : $data['mei']),
+                        intval($data['jun'] == null ? 0 : $data['jun']),
+                      
+                    );
+                    array_push($this->product,$restData );
+                }
+                // dd($this->product);
+                foreach($target as $data){
+                    $restData = intval($data['jul'] == null ? 0 : $data['jul']);
+                    array_push($this->target, $restData);
+                }
+            // dd($target);
+            $this->numEpoh = intval($this->request->getPost('epooch'));
+            $this->LR = floatval($this->request->getPost('lr'));
+            
+            
+            $data = [
+                'title' => 'Result Ann',
+                'datamonthly' => $this->product,
+                'product' => $this->Normalisasi(),
+                'target' => $this->NormalisasiTarget(),
+                'mse' => floatval($this->request->getPost('mse')),
+                'epoch' => $this->numEpoh,
+                'learningrate' => $this->LR,
+                'bobotv' => $this->RandomBobotv(),
+                'bobotw' => $this->RandomBobotw(),
+                'biasv' => $this->biasv,
+                'biasw' => $this->biasw,
+                'mseStd' => $this->mseStandard,
+            ];
+            // dd($data);
+            return view('admin/analysis/result_ann', $data);
+        }elseif($url == 'learning'){
+            $data = [
+                'title' => 'Learning Ann',
+                'product' => $this->request->getPost('product'),
+                'datamonthly' => $this->request->getPost('monthly'),
+                'target' => $this->request->getPost('target'),
+                'mse' => floatval($this->request->getPost('mse')),
+                'epoch' => intval($this->request->getPost('epoch')),
+                'learningrate' => floatval($this->request->getPost('lr')),
+                'numH' => $this->numHL,
+                // 'mse' => 0.001,
+                // 'epoch' => 100,
+                // 'learningrate' => 0.3,
+                'bobotv' => $this->request->getPost('bobotv'),
+                'bobotw' => $this->request->getPost('bobotw'),
+                'biasv' => $this->biasv,
+                'biasw' => $this->biasw,
+            ];
+            // dd($data);
+            return view('admin/analysis/learning_view', $data);
+        }
+    }
+
     public function MetodeJst()
     {
-       
 
         $this->numHL = count($this->product);
         //set min max per row
@@ -807,11 +894,11 @@ class Main extends BaseController
         }
         // random bobot w
         // $randBobotW = array();
-        for ($i=0; $i < count($this->product); $i++) { 
-            for ($j=0; $j < $this->numHL; $j++) { 
-                $this->bobotv[$i][$j] = rand(-100, 100)/100;
+        for ($i = 0; $i < count($this->product); $i++) {
+            for ($j = 0; $j < $this->numHL; $j++) {
+                $this->bobotv[$i][$j] = rand(-100, 100) / 100;
             }
-            $this->bobotw[$i] = rand(-100, 100)/100;
+            $this->bobotw[$i] = rand(-100, 100) / 100;
         }
         var_dump($this->bobotv);
         //
@@ -929,11 +1016,11 @@ class Main extends BaseController
                         $this->bobotv[$i][$j] = $PerubahanBobotV[$i][$j] + $this->bobotv[$i][$j];
                     }
                 }
-                for ($i=0; $i < count($this->bias); $i++) { 
+                for ($i = 0; $i < count($this->bias); $i++) {
                     $this->bias[$i] = $this->bias[$i] + ($this->LR * $errorBias[$i]);
                 }
                 $this->mseOut = $mse;
-            }else{
+            } else {
                 break;
             }
             // echo $this->mseOut.'    ';
@@ -945,14 +1032,74 @@ class Main extends BaseController
             // // }
             // echo '</br>'; 
         }
-       
+
 
         // var_dump($randBobotW);
+    }
+    public function Normalisasi()
+    {
+        
+        $minRest = array();
+        $maxRest = array();
+
+        for ($j = 2; $j < $this->numHL + 2; $j++) {
+            for ($i = 0; $i < count($this->product); $i++) {
+                $minRest[$i] = $this->product[$i][$j];
+                $maxRest[$i] = $this->product[$i][$j];
+
+            }
+            $this->minP[$j] = min($minRest);
+            $this->maxP[$j] = max($maxRest);
+        }
+        
+        // dd($this->minT);
+        //normalisasi 
+        $newMin = -1;
+        $newMax = 1;
+
+        $newProduct = [];
+
+        for ($j = 0; $j < count($this->product); $j++) {
+            $newProduct[$j][0] = $this->product[$j][0];
+            $newProduct[$j][1] = $this->product[$j][1];
+            for ($i = 2; $i < $this->numHL +2; $i++) {
+                $newProduct[$j][$i] = ($this->product[$j][$i] - $this->minP[$i]) / ($this->maxP[$i] - $this->minP[$i]) * ($newMax - $newMin) + $newMin;
+            }
+        }
+
+        return $newProduct;
+    }
+    public function NormalisasiTarget()
+    {
+        $this->minT = min($this->target);
+        $this->maxT = max($this->target);
+        //normalisasi 
+        $newMin = -1;
+        $newMax = 1;
+        $newTarget = [];
+        for ($i = 0; $i < count($this->target); $i++) {
+            $newTarget[$i] = ($this->target[$i] - $this->minT) / ($this->maxT - $this->minT) * ($newMax - $newMin) + $newMin;
+        }
+        return $newTarget;
+    }
+    public function RandomBobotv()
+    {
+        for ($i = 0; $i < $this->numHL; $i++) {
+            for ($j = 0; $j < $this->numHL; $j++) {
+                $this->bobotv[$i][$j] = rand(-100, 100) / 100;
+            }
+        }
+        return $this->bobotv;
+    }
+    public function RandomBobotw()
+    {
+        for ($i=0; $i < $this->numHL; $i++) { 
+            $this->bobotw[$i] = rand(-100, 100) / 100;
+        }
+        return $this->bobotw;
     }
     public function mon()
     {
         var_dump($this->M_product_sold->getMonthly());
     }
-
-  
 }

@@ -46,4 +46,42 @@ class M_product_sold extends Model
         
         return $query;
     }
+    public function getMonthlyAnn(){
+        $query = $this->db->query('
+        SELECT product_id, 
+        
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 1 and product_id = sold.product_id) as jan,
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 2 and product_id = sold.product_id) as feb,
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 3 and product_id = sold.product_id) as mar,
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 4 and product_id = sold.product_id) as apr,
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 5 and product_id = sold.product_id) as mei,
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 6 and product_id = sold.product_id) as jun
+        
+        
+        FROM product_sold as sold 
+        
+     
+
+        GROUP BY product_id')->getResultArray();
+
+        
+        return $query;
+    }
+    public function getTarget(){
+        $query = $this->db->query('
+        SELECT product_id, 
+        
+        
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 7 and product_id = sold.product_id) as jul
+        
+        
+        FROM product_sold as sold 
+        
+     
+
+        GROUP BY product_id')->getResultArray();
+
+        
+        return $query;
+    }
 }
