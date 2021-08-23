@@ -84,4 +84,22 @@ class M_product_sold extends Model
         
         return $query;
     }
+    public function getTargetById($id){
+        $query = $this->db->query('
+        SELECT product_id, 
+        
+        
+        (select sum(qty) FROM product_sold WHERE month(created_at) = 7 and product_id = sold.product_id) as jul
+        
+        
+        FROM product_sold as sold 
+        
+     
+        WHERE product_id = '.$id.'
+        GROUP BY product_id
+        ')->getResultArray();
+
+        
+        return $query;
+    }
 }

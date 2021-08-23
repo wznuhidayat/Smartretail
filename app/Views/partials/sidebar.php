@@ -37,7 +37,7 @@
                 <ul class="dropdown-menu" style="display: block;">
                   <li><a class="nav-link" href="<?= base_url() ?>/main/analysis/ann">Neural Network</a></li>
                   <li><a class="nav-link" href="layout-transparent.html">Prediction Result</a></li>
-                  <li><a class="nav-link" href="layout-top-navigation.html">Data Testing</a></li>
+                  <li><a class="nav-link" href="<?= base_url() ?>/main/analysis/datatest">Data Testing</a></li>
                 </ul>
               </li>
       <?php } ?>

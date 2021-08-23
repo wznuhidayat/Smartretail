@@ -40,12 +40,12 @@
                                         <tr>
                                             <th scope="row"><?= $i++; ?></th>
                                             <td><?= $products[0]; ?></td>
+                                            <td><?= $products[1] == null ? 0 : $products[1] ?></td>
                                             <td><?= $products[2] == null ? 0 : $products[2] ?></td>
                                             <td><?= $products[3] == null ? 0 : $products[3] ?></td>
                                             <td><?= $products[4] == null ? 0 : $products[4] ?></td>
                                             <td><?= $products[5] == null ? 0 : $products[5] ?></td>
                                             <td><?= $products[6] == null ? 0 : $products[6] ?></td>
-                                            <td><?= $products[7] == null ? 0 : $products[7] ?></td>
 
 
                                         </tr>
@@ -78,17 +78,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($bobotv as $v) : ?>
-                                    <tr>
-                                        <td><?= $v[0]; ?></td>
-                                        <td><?= $v[1]; ?></td>
-                                        <td><?= $v[2]; ?></td>
-                                        <td><?= $v[3]; ?></td>
-                                        <td><?= $v[4]; ?></td>
-                                        <td><?= $v[5]; ?></td>
 
-                                    </tr>
-                                <?php endforeach ?>
+                                <?php for ($j = 0; $j < count($bobotv); $j++) { ?>
+                                    <tr>
+                                            <?php for ($i = 0; $i < count($bobotv[$j]); $i++) { ?>
+                                            <td><?= $bobotv[$j][$i]; ?></td>
+
+
+                                            <?php } ?>
+                                        </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -137,9 +136,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php for ($i = 0; $i < count($biasv); $i++) { ?>
+                                <?php for ($i = 0; $i < count($bobotbiasv); $i++) { ?>
                                     <tr>
-                                        <td><?= $biasv[$i]; ?></td>
+                                        <td><?= $bobotbiasv[$i]; ?></td>
                                     </tr>
                                 <?php  }  ?>
                             </tbody>
@@ -162,9 +161,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php for ($i = 0; $i < count($biasw); $i++) { ?>
+                                <?php for ($i = 0; $i < count($bobotbiasw); $i++) { ?>
                                     <tr>
-                                        <td><?= $biasw[$i]; ?></td>
+                                        <td><?= $bobotbiasw[$i]; ?></td>
                                     </tr>
                                 <?php  }  ?>
                             </tbody>
@@ -181,21 +180,15 @@
                     <div class="mx-auto">
                         <form action="/main/analysis/learning" method="post">
                             <?= csrf_field(); ?>
-                            <?php for ($i = 0; $i < count($product); $i++) { ?>
-                                <?php for ($j = 2; $j < count($product[$j]); $j++) { ?>
-                                    <input type="hidden" name="product[<?= $i ?>][]" value="<?= $product[$i][$j] ?>">
-                                <?php } ?>
-                            <?php } ?>
-                            <?php for ($i = 0; $i < count($datamonthly); $i++) { ?>
-                                <?php for ($j = 2; $j < count($datamonthly[$j]); $j++) { ?>
-                                    <input type="hidden" name="monthly[<?= $i ?>][]" value="<?= $datamonthly[$i][$j] ?>">
-                                <?php } ?>
-                            <?php } ?>
-                            <?php for ($i = 0; $i < count($target); $i++) { ?>
-                                <input type="hidden" name="target[]" value="<?= $target[$i] ?>">
-                            <?php } ?>
+                            
                             <?php for ($i = 0; $i < count($bobotw); $i++) { ?>
                                 <input type="hidden" name="bobotw[]" value="<?= $bobotw[$i] ?>">
+                            <?php } ?>
+                            <?php for ($i = 0; $i < count($bobotbiasv); $i++) { ?>
+                                <input type="hidden" name="bobotbiasv[]" value="<?= $bobotbiasv[$i] ?>">
+                            <?php } ?>
+                            <?php for ($i = 0; $i < count($bobotbiasw); $i++) { ?>
+                                <input type="hidden" name="bobotbiasw[]" value="<?= $bobotbiasw[$i] ?>">
                             <?php } ?>
                             <?php for ($i = 0; $i < count($bobotv); $i++) { ?>
                                 <?php for ($j = 0; $j < count($bobotv); $j++) { ?>
