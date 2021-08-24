@@ -104,22 +104,22 @@
                                         $error[$h] =   $target[$h] - $f_inky[0];
                                         // $mseRest = $mseRest + pow($error[$h], 2);
                                         // echo $error[$h] . ' </br>'; 
-                                        $data = [
-                                            $product,
+                                        // $data = [
+                                        //     $product,
                                             // $bobotw,
                                             // $bobotbiasv,
                                             // $newV,
                                             // $f_inkz,
                                             // $newW,
                                             // $f_inky,
-                                            $errorOut,
-                                            $errorHL,
-                                            $target,
-                                            $errorW,
-                                            $HslPerkalian,
-                                            $errorV,
-                                            $errorBiasV,
-                                        ];
+                                        //     $errorOut,
+                                        //     $errorHL,
+                                        //     $target,
+                                        //     $errorW,
+                                        //     $HslPerkalian,
+                                        //     $errorV,
+                                        //     $errorBiasV,
+                                        // ];
                                         // dd($data);
                                     }
                                     $mseRest = 0;
