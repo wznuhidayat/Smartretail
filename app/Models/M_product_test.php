@@ -16,7 +16,11 @@ class M_product_test extends Model
     public function getDataTest($id = false)
     {
         if($id === false){
-            return $this->orderBy('create_at')->findAll();
+            
+            // return $this->orderBy('create_at')->findAll();
+            return $this->orderBy('create_at')->select($this->table.'.*, product.name') 
+            ->join('product', 'product.id_product='.$this->table.'.product_id')
+            ->get()->getResultArray();
           
         }else{
             

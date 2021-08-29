@@ -25,6 +25,7 @@
                                             No
                                         </th>
                                         <th>ID Product</th>
+                                        <th>Name</th>
                                         <th>Jan</th>
                                         <th>Feb</th>
                                         <th>Mar</th>
@@ -43,6 +44,7 @@
                                                 <?= $i++; ?>
                                             </td>
                                             <td><?= $tests["product_id"] ?></td>
+                                            <td><?= $tests["name"] ?></td>
                                             <td><?= $tests["x1"] ?></td>
                                             <td><?= $tests["x2"] ?></td>
                                             <td><?= $tests["x3"] ?></td>

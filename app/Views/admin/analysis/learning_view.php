@@ -153,9 +153,10 @@
                                                 No
                                             </th>
                                             <th>ID Product</th>
+                                            <th>Name</th>
                                             <th>Target</th>
-                                            <th>JST</th>
-                                            <th>Error</th>
+                                            <th>Prediction</th>
+                                            <th>Selisih</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -167,6 +168,7 @@
                                             <tr>
                                                 <th><?= $h + 1; ?></th>
                                                 <td><?= $test[$h]['product_id']; ?></td>
+                                                <td><?= $test[$h]['name']; ?></td>
                                                 <td><?= $test[$h]['target']; ?></td>
 
                                                 <?php
@@ -203,20 +205,16 @@
                                                 // dd($datatargettest);
                                                 if (round($outdenorm) > $datatargettest[$h]) {
                                                     $selisih = round($outdenorm) - $datatargettest[$h];
-                                                    if ($selisih == 0) {
-                                                        $presentaseError = round($outdenorm) / 1 * 100;
-                                                    } else {
-                                                        $presentaseError = round($outdenorm) / $selisih * 100;
-                                                    }
+                                                    
                                                 } else {
                                                     $selisih = $datatargettest[$h] - round($outdenorm);
-                                                    if ($selisih == 0) {
-                                                        $presentaseError = round($outdenorm) / 1 * 100;
-                                                    } else {
-                                                        $presentaseError = round($outdenorm) / $selisih * 100;
-                                                    }
+                                                    // if ($selisih == 0) {
+                                                    //     $presentaseError = round($outdenorm) / 1 * 100;
+                                                    // } else {
+                                                    //     $presentaseError = round($outdenorm) / $selisih * 100;
+                                                    // }
                                                 }
-                                                echo "<td>" . round($presentaseError, 2) . " %</td>";
+                                                echo "<td>" . round($selisih) . " </td>";
                                                 //error output
                                                 $errorOut = array();
                                                 $errorOut[0] = ($targettest[$h] - $f_inky[0]) * $f_inky[0] * (1 - $f_inky[0]);
@@ -273,8 +271,8 @@
 
                                                 // get mse
                                                 $error[$h] =   $targettest[$h] - $f_inky[0];
-                                                //Rata-rata
-                                                $AvgPresentasiError =  $AvgPresentasiError + round($presentaseError, 2);
+                                                // get akurasi
+                                                $accuracy[$h] =  $datatargettest[$h] - $outdenorm;
 
                                                 ?>
                                             </tr>
@@ -296,10 +294,16 @@
                             $mseRest = $mseRest + pow($error[$i], 2);
                         }
                         $mseOut = $mseRest / count($error);
-                        $hasilrata2 = $AvgPresentasiError / count($datatest);
+
+                        $accuracyRest = 0;
+                        for ($i = 0; $i < count($accuracy); $i++) {
+                            $accuracyRest = $accuracyRest + pow($accuracy[$i], 2);
+                        }
+                        $accuracyOut = $accuracyRest / count($error);
+                        // $hasilrata2 = $AvgPresentasiError / count($datatest);
 
                         ?>
-                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan Backpropagation maka MSE data uji adalah sebagai berikut <?= $mseOut; ?> dan akurasi prediksi yang didapatkan adalah <?= $hasilrata2; ?></p>
+                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan Backpropagation maka MSE data uji adalah sebagai berikut <?= $accuracyOut; ?> dan akurasi prediksi yang didapatkan adalah </p>
 
 
                     </div>

@@ -984,6 +984,7 @@ class Main extends BaseController
                 'title' => 'Data Testing',
                 'test' => $this->M_product_test->getDataTest(),
             ];
+            // dd($data);
             return view('admin/analysis/data_test_view', $data);
         }elseif ($url == 'delete' && $id != null) {
             // $item = $this->M_product_test->getcatproduct($id);
