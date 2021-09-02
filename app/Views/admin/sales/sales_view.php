@@ -5,14 +5,14 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Product</h1>
+            <h1>Sales</h1>
             
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Data Product</h4>
+                        <h4>Data Sales</h4>
                         <div class="card-header-action">
                             <a href="<?= base_url() ?>/main/product/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
                         </div>

@@ -303,7 +303,7 @@
                         // $hasilrata2 = $AvgPresentasiError / count($datatest);
 
                         ?>
-                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan Backpropagation maka MSE data uji adalah sebagai berikut <?= $accuracyOut; ?> dan akurasi prediksi yang didapatkan adalah </p>
+                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan Backpropagation maka akurasi prediksi yang didapatkan adalah <span class="text-dark"><?= $accuracyOut; ?></span> </p>
 
 
                     </div>
