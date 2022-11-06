@@ -31,4 +31,8 @@ class M_admin extends Model
     {
         return $this->where(['email' => $email])->first();
     }
+    public function countAdmin(){
+        $query = $this->db->table($this->table)->countAll();
+        return $query;
+    }
 }

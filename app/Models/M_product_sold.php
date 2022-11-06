@@ -18,14 +18,15 @@ class M_product_sold extends Model
     }
     public function getProductsSold($id)
     {
-        $query = $this->db->table($this->table)->select('*,product.name as product_name, '.$this->table.'.qty as sold_qty')->orderBy(''.$this->table.'.created_at','desc')
+        $query = $this->db->table($this->table)->select('*,product.name as product_name, ' . $this->table . '.qty as sold_qty')->orderBy('' . $this->table . '.created_at', 'desc')
             ->join('product', 'product.id_product=' . $this->table . '.product_id')
             ->join('seller', 'seller.id_seller=' . $this->table . '.seller_id')
             ->Where(['seller_id' => $id])->get()->getResultArray();
         // $query = $this->where(['seller_id' => $id]);
         return $query;
     }
-    public function getMonthly(){
+    public function getMonthly()
+    {
         $query = $this->db->query('
         SELECT product_id, name,
         
@@ -43,10 +44,36 @@ class M_product_sold extends Model
 
         GROUP BY product_id')->getResultArray();
 
-        
+
         return $query;
     }
-    public function getMonthlyAnn(){
+    public function getSalesData($date_start, $date_end)
+    {
+        $query = $this->db->query("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') as month, product_id,sum(qty) as qty
+            FROM product_sold 
+            WHERE DATE_FORMAT(created_at, '%Y-%m') >= '$date_start' AND
+            DATE_FORMAT(created_at,'%Y-%m') <= '$date_end'
+            GROUP BY month, product_id
+            ORDER BY month ASC
+            ")->getResultArray();
+
+        return $query;
+    }
+    public function getAllProductSales($date_start, $date_end)
+    {
+        $query = $this->db->query("
+            SELECT  product_id,sum(qty) as qty
+            FROM product_sold 
+            WHERE DATE_FORMAT(created_at, '%Y-%m') >= '$date_start' AND
+            DATE_FORMAT(created_at,'%Y-%m') <= '$date_end'
+            GROUP BY product_id
+            ")->getResultArray();
+
+        return $query;
+    }
+    public function getMonthlyAnn()
+    {
         $query = $this->db->query('
         SELECT product_id, 
         
@@ -64,10 +91,11 @@ class M_product_sold extends Model
 
         GROUP BY product_id')->getResultArray();
 
-        
+
         return $query;
     }
-    public function getTarget(){
+    public function getTarget()
+    {
         $query = $this->db->query('
         SELECT product_id, 
         
@@ -81,10 +109,11 @@ class M_product_sold extends Model
 
         GROUP BY product_id')->getResultArray();
 
-        
+
         return $query;
     }
-    public function getTargetById($id){
+    public function getTargetById($id)
+    {
         $query = $this->db->query('
         SELECT product_id, 
         
@@ -95,11 +124,16 @@ class M_product_sold extends Model
         FROM product_sold as sold 
         
      
-        WHERE product_id = '.$id.'
+        WHERE product_id = ' . $id . '
         GROUP BY product_id
         ')->getResultArray();
 
-        
+
+        return $query;
+    }
+    public function countProductSale()
+    {
+        $query = $this->db->table($this->table)->countAll();
         return $query;
     }
 }

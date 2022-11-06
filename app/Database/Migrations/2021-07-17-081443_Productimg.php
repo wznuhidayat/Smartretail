@@ -12,7 +12,6 @@ class Productimg extends Migration
 			'id_product_img'          => [
 				'type'           => 'INT',
 				'constraint'     => 8,
-				// 'unsigned'       => true,
 			],
 			'product_id'          => [
 				'type'           => 'VARCHAR',

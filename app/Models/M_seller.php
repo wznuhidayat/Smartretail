@@ -31,4 +31,8 @@ class M_seller extends Model
     {
         return $this->where(['email' => $email])->first();
     }
+    public function countSeller(){
+        $query = $this->db->table($this->table)->countAll();
+        return $query;
+    }
 }

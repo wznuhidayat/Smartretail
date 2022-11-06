@@ -42,7 +42,7 @@ class Main extends BaseController
         // [0.6,	0.44,	0.83,	0.75,	0.1,	0.08],
         // [0.26,	0.31,	0.58,	0.21,	0.08,	0.18],
         // [0.15,	0.47,	0.23,	0.84,	0.76,	0.51]
-        
+
     ];
     public $bobotw = array(
         // 0.21,
@@ -51,7 +51,7 @@ class Main extends BaseController
         // 0.51,
         // 0.53,
         // 0.86,
-        
+
 
     );
     public $randbiasv = [
@@ -61,7 +61,7 @@ class Main extends BaseController
     public $randbiasw = [
         // 0.33
     ];
-    
+
     public $HLIn = array();
     public $HLOut = array();
 
@@ -91,6 +91,10 @@ class Main extends BaseController
     {
         $data = [
             'title' => 'Dashboard',
+            'admin' => $this->M_admin->countAdmin(),
+            'seller' => $this->M_seller->countSeller(),
+            'product' => $this->M_product->countProduct(),
+            'product_sale' => $this->M_product_sold->countProductSale(),
         ];
         return view('admin/dashboard', $data);
     }
@@ -152,7 +156,6 @@ class Main extends BaseController
                 'gender' => $this->request->getPost(('gender')),
                 'img' => $nameImg,
                 'created_at' => date('Y/m/d h:i:s'),
-
             ];
             $this->M_admin->saveAdmin($data);
             if ($this->db->affectedRows() > 0) {
@@ -697,13 +700,13 @@ class Main extends BaseController
                 $row = [];
                 $btnEdit = "<a href=\"/main/product/edit/" . $list->id_product . "\" class=\"btn btn-info btn-sm\">Edit</a>";
                 $btnDetail = "<a href=\"/main/product/detail/" . $list->id_product . "\" class=\"btn btn-light btn-sm\">Detail</a>";
-                //     $btnDelete = " <form action=\"/main/product/delete/".$list->id_product."\" class=\"d-inline\" method=\"post\">
-                //     ". csrf_field()." 
-                //     <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
-                //     <button type=\"submit\" class=\"btn btn-danger btn-sm rm\">Delete</button>
-                // </form>";
+                $btnDelete = " <form action=\"/main/product/delete/" . $list->id_product . "\" class=\"d-inline\" method=\"post\">
+                    " . csrf_field() . " 
+                    <input type=\"hidden\" name=\"_method\" value=\"DELETE\">
+                    <button type=\"submit\" class=\"btn btn-danger btn-sm rm\">Delete</button>
+                </form>";
 
-                $btnDelete = "<a href=\"#\" class=\"btn btn-danger btn-sm rm-product\" value=\"" . $list->id_product . "\">delete</a>";
+                // $btnDelete = "<a href=\"#\" class=\"btn btn-danger btn-sm rm-product\" value=\"" . $list->id_product . "\">delete</a>";
                 $row[] = $no;
                 $row[] = $list->id_product;
                 $row[] = $list->name;
@@ -772,7 +775,7 @@ class Main extends BaseController
             echo json_encode($output);
         }
     }
-    public function monthly($url = 'index',$id = null)
+    public function monthly($url = 'index', $id = null)
     {
         if ($url == 'init') {
             $this->numEpoh = $this->request->getPost('epooch');
@@ -780,7 +783,7 @@ class Main extends BaseController
             $this->mseStandard = $this->request->getPost('mse');
 
             return redirect()->to('/main/Metodejst')->withInput();
-        }elseif($url == 'target'){
+        } elseif ($url == 'target') {
             $str = "";
             $characters = array_merge(range('0', '6'));
             $max = count($characters) - 1;
@@ -817,7 +820,7 @@ class Main extends BaseController
         return view('admin/monthly/monthly_view', $data);
     }
 
-    public function Analysis($url = 'index',$id = null)
+    public function Analysis($url = 'index', $id = null)
     {
         if ($url == 'ann') {
             $data = [
@@ -866,7 +869,7 @@ class Main extends BaseController
             for ($i = 0; $i < 1; $i++) {
                 $randbiasw[$i] = rand(0, 100) / 100;
             }
-           
+
             $data = [
                 'title' => 'Result Ann',
                 'datamonthly' => $this->product,
@@ -908,7 +911,7 @@ class Main extends BaseController
             $minRest = array();
             $maxRest = array();
 
-            for ($j = 0; $j < $this->numHL ; $j++) {
+            for ($j = 0; $j < $this->numHL; $j++) {
                 for ($i = 0; $i < count($this->product); $i++) {
                     $minRest[$i] = $this->product[$i][$j];
                     $maxRest[$i] = $this->product[$i][$j];
@@ -943,9 +946,9 @@ class Main extends BaseController
                 );
                 array_push($test, $restData);
             }
-            
+
             $targetTest = array();
-           
+
             foreach ($data_test as $data) {
                 $restData = intval($data['target'] == null ? 0 : $data['target']);
                 array_push($targetTest, $restData);
@@ -979,21 +982,23 @@ class Main extends BaseController
             ];
             // dd($data);
             return view('admin/analysis/learning_view', $data);
-        }elseif ($url == 'datatest') {
+        } elseif ($url == 'datatest') {
             $data = [
                 'title' => 'Data Testing',
                 'test' => $this->M_product_test->getDataTest(),
             ];
             // dd($data);
             return view('admin/analysis/data_test_view', $data);
-        }elseif ($url == 'delete' && $id != null) {
+        } elseif ($url == 'delete' && $id != null) {
             // $item = $this->M_product_test->getcatproduct($id);
             $this->M_product_test->delete($id);
             return redirect()->to('/main/analysis/datatest');
         }
-        
     }
-
+    public function testgetmonth()
+    {
+        dd($this->M_product_sold->testMonth());
+    }
     public function MetodeJst()
     {
 
@@ -1280,5 +1285,46 @@ class Main extends BaseController
             $Target[$i] = ($data[$i] - $this->minT) / ($this->maxT - $this->minT) * ($newMax - $newMin) + $newMin;
         }
         return $Target;
+    }
+
+    public function salesdata()
+    {
+        $data = [
+            'title' => 'Dashboard',
+            // 'admin' => $this->M_admin->countAdmin(),
+            // 'seller' => $this->M_seller->countSeller(),
+            // 'product' => $this->M_product->countProduct(),
+            // 'product_sale' => $this->M_product_sold->countProductSale(),
+        ];
+        return view('admin/sales_data/sales_data_view', $data);
+    }
+    public function getSalesData()
+    {
+        $salesData = $this->M_product_sold->getSalesData('2020-01', '2020-03');
+        $dateStart = explode("-", '2020-01');
+        $dateEnd = explode("-", '2021-01');
+        $yearStart = $dateStart[0];
+        $yearEnd = $dateEnd[0];
+        $monthStart = $dateStart[1];
+        $monthEnd = $dateEnd[1];
+        $gapMonth = (($yearEnd - $yearStart) * 12) + ($monthEnd - $monthStart);
+        $getDataGroupId = $this->M_product_sold->getAllProductSales('2020-01', '2020-03');
+        $data = [];
+        foreach ($getDataGroupId as $key => $value) {
+            for ($i = 0; $i < $gapMonth; $i++) {
+                foreach ($salesData as $val) {
+                    $date = explode("-", $val['month']);
+                    $month = $date[0];
+                    // echo $month;
+                    if ($value['product_id'] == $val['product_id'] && $monthStart == $month) {
+                        $data[$value['product_id']][$val['month']] = $val['qty'];
+                    } else {
+                        $data[$value['product_id']][$val['month']] = 0;
+                    }
+                    // echo $mstrt;
+                }
+            }
+        }
+        echo json_encode($data);
     }
 }

@@ -56,6 +56,9 @@ class M_product extends Model
             return $query;
         }
     }
-
+    public function countProduct(){
+        $query = $this->db->table($this->table)->countAll();
+        return $query;
+    }
 
 }

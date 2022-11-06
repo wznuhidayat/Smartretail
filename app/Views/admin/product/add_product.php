@@ -5,13 +5,13 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Seller</h1>
+            <h1>Product</h1>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Add Seller</h4>
+                        <h4>Add Product</h4>
                     </div>
                     <div class="card-body">
                         <form action="/main/product/save" method="post" enctype="multipart/form-data">

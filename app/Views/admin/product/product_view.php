@@ -6,7 +6,7 @@
     <section class="section">
         <div class="section-header">
             <h1>Product</h1>
-            
+
         </div>
         <div class="row">
             <div class="col-12">
@@ -14,15 +14,16 @@
                     <div class="card-header">
                         <h4>Data Product</h4>
                         <div class="card-header-action">
-                            <a href="<?= base_url() ?>/main/product/create" class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
+                            <a href="<?= base_url() ?>/main/product/create"
+                                class="btn btn-icon icon-left btn-primary"><i class="fa fa-plus-circle"></i> Add</a>
                         </div>
                     </div>
                     <?= $this->include('massage') ?>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
+                            <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                             <table class="table table-striped" id="product-table">
-                            <?= csrf_field() ?>
+                                <?= csrf_field() ?>
                                 <thead>
                                     <tr>
                                         <th class="text-center">
@@ -37,8 +38,10 @@
                                     </tr>
                                 </thead>
                                 <?php $request = \Config\Services::request(); ?>
+                                <?php //dd($request->uri->getSegment(2)) 
+                                ?>
                                 <tbody id="<?= $request->uri->getSegment(2); ?>">
-                                    
+
                                 </tbody>
                             </table>
                         </div>
