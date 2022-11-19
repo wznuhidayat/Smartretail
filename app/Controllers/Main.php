@@ -15,6 +15,7 @@ use App\Models\Sales_Datatable;
 use Config\Services;
 use Error;
 use phpDocumentor\Reflection\Types\This;
+use PhpParser\Node\Stmt\Echo_;
 
 class Main extends BaseController
 {
@@ -1300,31 +1301,43 @@ class Main extends BaseController
     }
     public function getSalesData()
     {
-        $salesData = $this->M_product_sold->getSalesData('2020-01', '2020-03');
+        $salesData = $this->M_product_sold->getSalesData('2020-01', '2020-12');
         $dateStart = explode("-", '2020-01');
-        $dateEnd = explode("-", '2021-01');
+        $dateEnd = explode("-", '2020-12');
         $yearStart = $dateStart[0];
         $yearEnd = $dateEnd[0];
         $monthStart = $dateStart[1];
         $monthEnd = $dateEnd[1];
         $gapMonth = (($yearEnd - $yearStart) * 12) + ($monthEnd - $monthStart);
-        $getDataGroupId = $this->M_product_sold->getAllProductSales('2020-01', '2020-03');
+        $getDataGroupId = $this->M_product_sold->getAllProductSales('2020-01', '2020-12');
         $data = [];
         foreach ($getDataGroupId as $key => $value) {
+            $row['product_id'] = $value['product_id'];
+            $row['month'] = [];
+
+            $monthStart = $dateStart[1];
             for ($i = 0; $i < $gapMonth; $i++) {
+                // $data[$value['product_id']][$yearStart . '-' . $monthStart] = 0;
+                $chiled_row = [];
+                $chiled_row['month'] = $yearStart . '-' . $monthStart;
+                $chiled_row['qty'] = 0;
                 foreach ($salesData as $val) {
                     $date = explode("-", $val['month']);
-                    $month = $date[0];
-                    // echo $month;
+                    $month = $date[1];
                     if ($value['product_id'] == $val['product_id'] && $monthStart == $month) {
-                        $data[$value['product_id']][$val['month']] = $val['qty'];
-                    } else {
-                        $data[$value['product_id']][$val['month']] = 0;
+
+                        $chiled_row['month'] = $val['month'];
+                        $chiled_row['qty'] = $val['qty'];
+                        // $data[$value['product_id']][$val['month']] = $val['qty'];
                     }
-                    // echo $mstrt;
                 }
+                list($mem_num) = sscanf($monthStart, "%[0-9]");
+                $monthStart =  str_pad($mem_num + 1, 2, '0', STR_PAD_LEFT);
+                array_push($row['month'], $chiled_row);
+                // echo $monthStart;
             }
+            array_push($data, $row);
         }
-        echo json_encode($data);
+        return json_encode($data);
     }
 }

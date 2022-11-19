@@ -89,73 +89,76 @@ $(document).ready(function() {
         url: "<?= site_url('main/getSalesData') ?>",
         method: "GET",
         success: function(data) {
-            console.log(data);
-            var chartx = [];
-            var charty = [];
-            for (var i in data) {
-                chartx.push(data[i].qty);
-                charty.push(data[i].month);
-            }
-            var ctx = document.getElementById('salesdata').getContext('2d');
-            var chart = new Chart(ctx, {
+            // console.log(data);
+            var chartx = ['hari satu'];
+            var charty = [19, 20, 21];
+            // for (var i in data) {
+            //     chartx.push(data[i].month.product_id);
+            //     charty.push(data[i].month.qty);
+            //     // console.log(data[i])
+            // }
+            "use strict";
+            mydata = [];
+            mylabel = [];
+            JSON.parse(data).map(function(e) {
+                mon = [];
+                qty = [];
+                e.month.map(function(x) {
+                    qty.push(x.qty);
+                    if (mon.length != x.length) {
+                        mon.push(x.month);
+                    }
+                })
+                var row = {
+                    // label: e.product_id,
+                    data: qty,
+                    borderWidth: 2,
+                    // backgroundColor: '#ffffff',
+                    borderColor: '#' + (Math.random() * 0xFFFFFF << 0).toString(16)
+                        .padStart(6, '0'),
+                    borderWidth: 1,
+                    // pointBackgroundColor: '#ffffff',
+                    pointRadius: 4
+                }
+                mylabel.push(e.product_id)
+                mydata.push(row);
+            });
+            // var ctx = document.getElementById('salesdata').getContext('2d');
+            // var chart = new Chart(ctx, {
+            //     type: 'line',
+            //     data: {
+            //         labels: chartx,
+            //         datasets: [{
+            //             label: 'Jumlah Peraturan Daerah',
+            //             backgroundColor: 'rgb(252, 116, 101)',
+            //             borderColor: 'rgb(255, 255, 255)',
+            //             data: charty
+            //         }]
+            //     },
+            //     options: {}
+            // });
+            var ctx = document.getElementById("sales").getContext('2d');
+            var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: chartx,
-                    datasets: [{
-                        label: 'Jumlah Peraturan Daerah',
-                        backgroundColor: 'rgb(252, 116, 101)',
-                        borderColor: 'rgb(255, 255, 255)',
-                        data: charty
-                    }]
+                    labels: mon,
+                    datasets: mydata
                 },
-                options: {}
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    // tooltips: {
+                    //     callbacks: {
+
+                    //     }
+                    // }
+                }
             });
+
+
         }
     });
-});
-"use strict";
-
-var ctx = document.getElementById("sales").getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        datasets: [{
-            label: 'Statistics',
-            data: [460, 458, 330, 502, 430, 610, 488],
-            borderWidth: 2,
-            backgroundColor: '#6777ef',
-            borderColor: '#6777ef',
-            borderWidth: 2.5,
-            pointBackgroundColor: '#ffffff',
-            pointRadius: 4
-        }]
-    },
-    options: {
-        // legend: {
-        //     display: false
-        // },
-        // scales: {
-        //     yAxes: [{
-        //         gridLines: {
-        //             drawBorder: false,
-        //             color: '#f2f2f2',
-        //         },
-        //         ticks: {
-        //             beginAtZero: true,
-        //             stepSize: 150
-        //         }
-        //     }],
-        //     xAxes: [{
-        //         ticks: {
-        //             display: false
-        //         },
-        //         gridLines: {
-        //             display: false
-        //         }
-        //     }]
-        // },
-    }
 });
 </script>
 </body>

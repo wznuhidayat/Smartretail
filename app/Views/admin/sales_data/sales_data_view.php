@@ -21,7 +21,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <canvas id="sales"></canvas>
+                        <canvas id="sales" class="chart" series="series"
+                            colours="[ { fillColor: '#ffff00' }, { fillColor: '#0066ff' } ]"></canvas>
                         <!-- <div class="statistic-details mt-sm-4">
                             <div class="statistic-details-item">
                                 <span class="text-muted"><span class="text-primary"><i
