@@ -199,3 +199,72 @@ $(document).ready(function () {
 })
 
 //datatable
+// const $config_table = {}, // opsional kalaw dibutuhkan aja
+  // $table = $("#select-month-range").DataTable($config_table);
+  
+  $('#find').on('click', load_data);
+  function load_data() {
+    
+    var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
+    var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+    // $table.clear().draw(); // clear table
+    console.log(csrfName, csrfHash);
+    $.ajax({
+      url: '/NeuralNetwork/getDataMonthRange',
+      method: 'POST', 
+      dataType: 'json', // tipe return dari server
+      data: {[csrfName]: csrfHash, data: $('#form-save-month-range').serializeArray()  },
+      success: (result) => {
+        var columns = [];
+        var rows = [];
+     
+        for (var i in result) {
+          var temp_rows = [];
+          var temp_cols = [];
+          for (var j in result[i]) {
+              temp_cols.push(result[i][j]['name']);
+              temp_rows.push(result[i][j]['value']);
+          }
+          // console.log(temp_cols);
+          if (columns < 1) {
+            columns.push(temp_cols);
+          }
+          rows.push(temp_rows);
+        }
+        console.log(rows);
+        // ['10215179', 'DRAWER 40X50X23.5CM WHITE', 0, 0, '1', '1', '1', 0]
+        // ['10215200', 'DRAWER 40X50X29.5CM WHITE', 0, '6', '4', '6', '11', 0]
+        // ['10216714', 'MASK NEOPRENE + N95 FILTER BLACK', '27', '4', 0, 0, 0, 0]
+        console.log(columns[0]);
+        //['product_id', 'name', '2020-02', '2020-03', '2020-04', '2020-05', '2020-06', '2020-07']
+          $('#select-month-range').DataTable( {
+            dom: "Bfrtip",
+            data: rows,
+            columns: columns[0]
+          });
+      }
+    });
+  
+  }
+// $('#find').click(function() {
+//   var dataMonthRange = new FormData($('.form-save-month-range')[0]);
+//   console.log($('.form-save-month-range').serializeArray());
+  // dataMonthRange.append('_method', 'PUT');
+  // $('#select-month-range').DataTable({
+  //   processing: true,
+  //   serverSide: true,
+  //   ajax: {
+  //     url: 'NeuralNetwork/getDataMonthRange',
+  //     cache : false,
+  //     processData: false,
+  //     contentType: false,
+  //     // type: 'POST',
+  //     // headers: {'X-Requested-With': 'XMLHttpRequest'},
+  //     data: {
+  //        data : dataMonthRange
+  //     },
+      
+  //   },
+    
+  // });
+// });

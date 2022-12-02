@@ -9,30 +9,39 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="<?= base_url() ?>/template/assets/js/stisla.js"></script>
+<script src="<?= base_url() ?>/template/stisla/assets/js/stisla.js"></script>
 
 <!-- JS Libraies -->
-<script src="<?= base_url() ?>/template/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/simpleweather/jquery.simpleWeather.min.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/chart.js/dist/Chart.min.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/summernote/dist/summernote-bs4.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
-<!-- <script src="<?= base_url() ?>/template/node_modules/dropzone/dist/min/dropzone.min.js"></script> -->
+<script src="<?= base_url() ?>/template/stisla/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js">
+</script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/simpleweather/jquery.simpleWeather.min.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/chart.js/dist/Chart.min.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/summernote/dist/summernote-bs4.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- <script src="<?= base_url() ?>/template/stisla/node_modules/dropzone/dist/min/dropzone.min.js"></script> -->
 <!-- Template JS File -->
-<script src="<?= base_url() ?>/template/assets/js/scripts.js"></script>
-<script src="<?= base_url() ?>/template/assets/js/custom.js"></script>
+<script src="<?= base_url() ?>/template/stisla/assets/js/scripts.js"></script>
+<script src="<?= base_url() ?>/template/stisla/assets/js/custom.js"></script>
 
 <!-- Page Specific JS File -->
-<script src="<?= base_url() ?>/template/assets/js/page/modules-datatables.js"></script>
-<script src="<?= base_url() ?>/template/assets/js/page/index-0.js"></script>
-<script src="<?= base_url() ?>/template/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-<!-- <script src="<?= base_url() ?>/template/node_modules/image-uploader/dist/image-uploader.min.js"></script> -->
-<!-- <script src="<?= base_url() ?>/template/assets/js/page/components-multiple-upload.js"></script> -->
+<script src="<?= base_url() ?>/template/stisla/assets/js/page/modules-datatables.js"></script>
+<script src="<?= base_url() ?>/template/stisla/assets/js/page/index-0.js"></script>
+<script src="<?= base_url() ?>/template/stisla/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="<?= base_url() ?>/template/stisla/node_modules/image-uploader/dist/image-uploader.min.js"></script> -->
+<!-- <script src="<?= base_url() ?>/template/stisla/assets/js/page/components-multiple-upload.js"></script> -->
 <!-- my custome -->
 <script src="<?= base_url() ?>/assets/js/mystyle.js"></script>
+<script type="text/javascript">
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
 <script>
 $(document).ready(function() {
     var table = $('#product-table').DataTable({
@@ -137,24 +146,24 @@ $(document).ready(function() {
             //     },
             //     options: {}
             // });
-            var ctx = document.getElementById("sales").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: mon,
-                    datasets: mydata
-                },
-                options: {
-                    legend: {
-                        display: false
-                    },
-                    // tooltips: {
-                    //     callbacks: {
+            // var ctx = document.getElementById("sales").getContext('2d');
+            // var myChart = new Chart(ctx, {
+            //     type: 'line',
+            //     data: {
+            //         labels: mon,
+            //         datasets: mydata
+            //     },
+            //     options: {
+            //         legend: {
+            //             display: false
+            //         },
+            //         // tooltips: {
+            //         //     callbacks: {
 
-                    //     }
-                    // }
-                }
-            });
+            //         //     }
+            //         // }
+            //     }
+            // });
 
 
         }

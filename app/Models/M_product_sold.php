@@ -63,10 +63,11 @@ class M_product_sold extends Model
     public function getAllProductSales($date_start, $date_end)
     {
         $query = $this->db->query("
-            SELECT  product_id,sum(qty) as qty
+            SELECT  product_id,sum(product_sold.qty) as qty,name
             FROM product_sold 
-            WHERE DATE_FORMAT(created_at, '%Y-%m') >= '$date_start' AND
-            DATE_FORMAT(created_at,'%Y-%m') <= '$date_end'
+            JOIN product ON product_sold.product_id=product.id_product
+            WHERE DATE_FORMAT(product_sold.created_at, '%Y-%m') >= '$date_start' AND
+            DATE_FORMAT(product_sold.created_at,'%Y-%m') <= '$date_end'
             GROUP BY product_id
             ")->getResultArray();
 

@@ -8,6 +8,7 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use \App\Filters\Auth;
 use \App\Filters\FilterSeller;
+
 class Filters extends BaseConfig
 {
 	/**
@@ -61,6 +62,8 @@ class Filters extends BaseConfig
 	 *
 	 * @var array
 	 */
-	public $filters = ['auth' => ['before' => ['main','main/admin','main/seller','main/product']],
-	'FilterSeller' => ['before' => ['seller']]];
+	public $filters = [
+		'auth' => ['before' => ['main', 'main/admin', 'main/seller', 'main/product']],
+		'FilterSeller' => ['before' => ['seller']]
+	];
 }

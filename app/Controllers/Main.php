@@ -12,6 +12,7 @@ use App\Models\M_product_test;
 use App\Models\M_cat_product;
 use App\Models\Product_Datatable;
 use App\Models\Sales_Datatable;
+use CodeIgniter\HTTP\Request;
 use Config\Services;
 use Error;
 use phpDocumentor\Reflection\Types\This;
@@ -820,10 +821,13 @@ class Main extends BaseController
         ];
         return view('admin/monthly/monthly_view', $data);
     }
-
+    public function getSelectMonthRange(Request $request)
+    {
+    }
     public function Analysis($url = 'index', $id = null)
     {
         if ($url == 'ann') {
+
             $data = [
                 'title' => 'Neural Network',
                 'monthly_data' => $this->M_product_sold->getMonthly()
