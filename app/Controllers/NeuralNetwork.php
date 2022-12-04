@@ -63,38 +63,38 @@ class NeuralNetwork extends BaseController
         $data = [];
         foreach ($getDataGroupId as $key => $value) {
             $row = [];
-            $chiled_row['name'] = 'product_id';
-            $chiled_row['value'] = $value['product_id'];
-            array_push($row, $chiled_row);
-            $chiled_row['name'] = 'name';
-            $chiled_row['value'] = $value['name'];
-            array_push($row, $chiled_row);
+            $row['product_id'] = $value['product_id'];
+            $row['name'] = $value['name'];
+            $yearStart = $dateStart[0];
             $monthStart = $dateStart[1];
             for ($i = 0; $i < $gapMonth; $i++) {
-                // $data[$value['product_id']][$yearStart . '-' . $monthStart] = 0;
-                $chiled_row = [];
-                $chiled_row['name'] = $yearStart . '-' . $monthStart;
-                $chiled_row['value'] = 0;
+                $row[$yearStart . '-' . $monthStart] = 0;
                 foreach ($salesData as $val) {
                     $date = explode("-", $val['month']);
+                    $year = $date[0];
                     $month = $date[1];
-                    if ($value['product_id'] == $val['product_id'] && $monthStart == $month) {
-
-                        $chiled_row['name'] = $val['month'];
-                        $chiled_row['value'] = $val['qty'];
-                        // $data[$value['product_id']][$val['month']] = $val['qty'];
+                    if ($value['product_id'] == $val['product_id'] && $monthStart == $month && $yearStart == $year) {
+                        $row[$val['month']] = $val['qty'];
                     }
                 }
                 list($mem_num) = sscanf($monthStart, "%[0-9]");
-                $monthStart =  str_pad($mem_num + 1, 2, '0', STR_PAD_LEFT);
-                array_push($row, $chiled_row);
-                // echo $monthStart;
+                list($mem_year) = sscanf($yearStart, "%[0-9]");
+                if ($mem_num == '12') {
+                    $mem_num = '01';
+                    $mem_year += 1;
+                } else {
+                    $mem_num += 1;
+                }
+                $monthStart =  str_pad($mem_num, 2, '0', STR_PAD_LEFT);
+                $yearStart =  str_pad($mem_year, 2, '0', STR_PAD_LEFT);
+                // if ($month == '13') {
+                //     $monthStart = '01';
+                // }
             }
             array_push($data, $row);
         }
-        $data['token'] = $csrfHash;
+        // $data['token'] = $csrfHash;
         // return json_encode($data);
-
-        return $this->response->setJSON($data);
+        return $this->response->setJSON((array) $data);
     }
 }

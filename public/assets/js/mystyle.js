@@ -215,36 +215,72 @@ $(document).ready(function () {
       dataType: 'json', // tipe return dari server
       data: {[csrfName]: csrfHash, data: $('#form-save-month-range').serializeArray()  },
       success: (result) => {
+        console.log(result);
         var columns = [];
-        var rows = [];
+        var colsec = [];
+        // var rows = [];
      
-        for (var i in result) {
-          var temp_rows = [];
-          var temp_cols = [];
-          for (var j in result[i]) {
-              temp_cols.push(result[i][j]['name']);
-              temp_rows.push(result[i][j]['value']);
-          }
-          // console.log(temp_cols);
-          if (columns < 1) {
-            columns.push(temp_cols);
-          }
-          rows.push(temp_rows);
-        }
-        console.log(rows);
+        
         // ['10215179', 'DRAWER 40X50X23.5CM WHITE', 0, 0, '1', '1', '1', 0]
         // ['10215200', 'DRAWER 40X50X29.5CM WHITE', 0, '6', '4', '6', '11', 0]
         // ['10216714', 'MASK NEOPRENE + N95 FILTER BLACK', '27', '4', 0, 0, 0, 0]
-        console.log(columns[0]);
+        var headerName = Object.keys(result[0]);
+        var headDtHTML = makeHeaderTables(headerName);
+        $('#select-month-range').append(headDtHTML);
+        for (var i in headerName) {
+          columns.push({"data" : headerName[i],"title": headerName[i] });
+        }
+        // console.log(columns);
         //['product_id', 'name', '2020-02', '2020-03', '2020-04', '2020-05', '2020-06', '2020-07']
-          $('#select-month-range').DataTable( {
-            dom: "Bfrtip",
-            data: rows,
-            columns: columns[0]
-          });
+          // $('#select-month-range').DataTable( {
+          //   dom: "Bfrtip",
+          //   data: rows,
+          //   // columns: columns[0]
+          // });
+         var dtInstance = $('#select-month-range').DataTable(getDatatablesDef(columns));
+        //  console.log(dtInstance);
+        var temp_result = [];
+        for (const i in result) {
+          temp_result.push(result[i]);
+        }
+        console.log(temp_result);
+         dtInstance.rows.add(temp_result).draw();
+        // $.each(result, function(i, data) {
+        //   var body = "<tr>";
+        //   $.each(headerName, function (i,val) {
+        //     body    += "<td>" + data.val + "</td>";
+        //   })
+        //   body    += "</tr>";
+        //   $( "#select-month-range tbody" ).append(body);
+        // });
+        /*DataTables instantiation.*/
+        // $( "#select-month-range" ).DataTable();
+        
       }
     });
   
+  }
+  function makeHeaderTables(columnHeaderName) {
+    var table_head = '<thead class="table-header"><tr>';
+
+    $.each(columnHeaderName, function (data, value) {
+        table_head += '<th>';
+        table_head += value;
+        table_head += '</th>';
+    });
+
+    table_head += '</thead></tr>';
+    return table_head;
+  }
+  function getDatatablesDef(column) {
+    var dataTables = {
+      columns: column,
+      info: false,
+      searching: true,
+      ordering: false,
+
+    }
+    return dataTables;
   }
 // $('#find').click(function() {
 //   var dataMonthRange = new FormData($('.form-save-month-range')[0]);

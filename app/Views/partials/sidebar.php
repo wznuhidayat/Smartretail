@@ -37,13 +37,14 @@
                 <a class="nav-link" href="<?= base_url() ?>/main/monthly"><i class="fas fa-clipboard-list"></i>
                     <span>Monthly Data</span></a>
             </li>
-            <li class="nav-item dropdown <?= $request->uri->getSegment(2) == 'analysis' ? 'active' : '' ?>">
+            <li
+                class="nav-item dropdown <?= $request->uri->getSegment(2) == 'analysis' || $request->uri->getSegment(1) == 'NeuralNetwork' ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-chart-line"></i>
                     <span>Analysis</span></a>
                 <ul class="dropdown-menu">
-                    <li
-                        class="<?= $request->uri->getTotalSegments() >= 2 && $request->uri->getSegment(3) == 'ann' ? 'active' : '' ?>">
-                        <a class="nav-link" href="<?= base_url() ?>/main/analysis/ann">Neural Network</a>
+                    <li class="<?= $request->uri->getSegment(1) == 'NeuralNetwork' ? 'active' : '' ?>">
+                        <a class="nav-link" href="<?= base_url() ?>/NeuralNetwork">Neural Network</a>
+                        <!-- <a class="nav-link" href="<?= base_url() ?>/main/analysis/ann">Neural Network</a> -->
                     </li>
                     <li
                         class="<?= $request->uri->getTotalSegments() >= 2 && $request->uri->getSegment(3) == 'datatest' ? 'active' : '' ?>">
