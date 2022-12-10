@@ -207,8 +207,12 @@ $(document).ready(function () {
     
     var csrfName = $('.txt_csrfname').attr('name'); // CSRF Token name
     var csrfHash = $('.txt_csrfname').val(); // CSRF hash
+    var getStartMonth = $('#startMonth').val();
+    var getEndMonth = $('#endMonth').val();
+    $('#startMonthRange').val(getStartMonth);
+    $('#endMonthRange').val(getEndMonth);
     // $table.clear().draw(); // clear table
-    console.log(csrfName, csrfHash);
+    // console.log(getStartMonth, getEndMonth);
     $.ajax({
       url: '/NeuralNetwork/getDataMonthRange',
       method: 'POST', 
@@ -217,26 +221,14 @@ $(document).ready(function () {
       success: (result) => {
         console.log(result);
         var columns = [];
-        var colsec = [];
-        // var rows = [];
-     
-        
-        // ['10215179', 'DRAWER 40X50X23.5CM WHITE', 0, 0, '1', '1', '1', 0]
-        // ['10215200', 'DRAWER 40X50X29.5CM WHITE', 0, '6', '4', '6', '11', 0]
-        // ['10216714', 'MASK NEOPRENE + N95 FILTER BLACK', '27', '4', 0, 0, 0, 0]
+    
         var headerName = Object.keys(result[0]);
         var headDtHTML = makeHeaderTables(headerName);
         $('#select-month-range').append(headDtHTML);
         for (var i in headerName) {
           columns.push({"data" : headerName[i],"title": headerName[i] });
         }
-        // console.log(columns);
-        //['product_id', 'name', '2020-02', '2020-03', '2020-04', '2020-05', '2020-06', '2020-07']
-          // $('#select-month-range').DataTable( {
-          //   dom: "Bfrtip",
-          //   data: rows,
-          //   // columns: columns[0]
-          // });
+    
          var dtInstance = $('#select-month-range').DataTable(getDatatablesDef(columns));
         //  console.log(dtInstance);
         var temp_result = [];
@@ -245,17 +237,7 @@ $(document).ready(function () {
         }
         console.log(temp_result);
          dtInstance.rows.add(temp_result).draw();
-        // $.each(result, function(i, data) {
-        //   var body = "<tr>";
-        //   $.each(headerName, function (i,val) {
-        //     body    += "<td>" + data.val + "</td>";
-        //   })
-        //   body    += "</tr>";
-        //   $( "#select-month-range tbody" ).append(body);
-        // });
-        /*DataTables instantiation.*/
-        // $( "#select-month-range" ).DataTable();
-        
+   
       }
     });
   
@@ -282,25 +264,22 @@ $(document).ready(function () {
     }
     return dataTables;
   }
-// $('#find').click(function() {
-//   var dataMonthRange = new FormData($('.form-save-month-range')[0]);
-//   console.log($('.form-save-month-range').serializeArray());
-  // dataMonthRange.append('_method', 'PUT');
-  // $('#select-month-range').DataTable({
-  //   processing: true,
-  //   serverSide: true,
-  //   ajax: {
-  //     url: 'NeuralNetwork/getDataMonthRange',
-  //     cache : false,
-  //     processData: false,
-  //     contentType: false,
-  //     // type: 'POST',
-  //     // headers: {'X-Requested-With': 'XMLHttpRequest'},
-  //     data: {
-  //        data : dataMonthRange
-  //     },
-      
-  //   },
-    
-  // });
-// });
+
+
+  //chart record products Anaysis
+  var chartx = ['hari satu','hari dua', 'hari tiga'];
+var charty = [19, 20, 21];
+var ctx = document.getElementById('record-products').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: chartx,
+        datasets: [{
+            label: 'Jumlah Peraturan Daerah',
+            backgroundColor: 'rgb(252, 116, 101)',
+            borderColor: 'rgb(255, 255, 255)',
+            data: charty
+        }]
+    },
+    options: {}
+});

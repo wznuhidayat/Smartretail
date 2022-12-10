@@ -23,9 +23,10 @@
                                 <label>Select Month Range</label>
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="month" name="startMonth" class="form-control range-date-picker">
+                                        <input type="month" name="startMonth" id="startMonth"
+                                            class="form-control range-date-picker">
                                     </div>
-                                    <div class="col-6"><input type="month" name="endMonth"
+                                    <div class="col-6"><input type="month" name="endMonth" id="endMonth"
                                             class="form-control range-date-picker"></div>
                                 </div>
                             </div>
@@ -35,8 +36,11 @@
                             </div>
                         </form>
 
-                        <form action="/main/analysis/resultann" method="post">
+                        <!-- <form action="/main/analysis/resultann" method="post"> -->
+                        <form action="/NeuralNetwork/learningann" method="post">
                             <?= csrf_field(); ?>
+                            <input type="hidden" id="startMonthRange" name="startMonthRange">
+                            <input type="hidden" id="endMonthRange" name="endMonthRange">
                             <div class="form-group">
                                 <label>Epooch</label>
                                 <input type="number" class="form-control" name="epooch">

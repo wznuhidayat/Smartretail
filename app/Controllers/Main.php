@@ -809,6 +809,15 @@ class Main extends BaseController
             // dd($data);
             $this->M_product_test->saveProductTest($data);
             return redirect()->to('/main/monthly');
+        } elseif ($url == 'product' && $id != null) {
+            $data = [
+                'title' => 'Record Product',
+                // 'product' => $query_product,
+                // 'validation' => \Config\Services::validation(),
+                // 'selected' => $query_product['id_category'],
+                // 'category' => $category
+            ];
+            return view('admin/monthly/record_view', $data);
         }
         $data = [
             'title' => 'monthly',

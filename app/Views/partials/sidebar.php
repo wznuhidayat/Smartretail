@@ -33,15 +33,18 @@
                 <a class="nav-link" href="<?= base_url() ?>/main/categoryproduct"><i class="fas fa-list-alt"></i>
                     <span>Category Product</span></a>
             </li>
-            <li class="<?= $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
+            <!-- <li class="<?= $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
                 <a class="nav-link" href="<?= base_url() ?>/main/monthly"><i class="fas fa-clipboard-list"></i>
                     <span>Monthly Data</span></a>
-            </li>
+            </li> -->
             <li
-                class="nav-item dropdown <?= $request->uri->getSegment(2) == 'analysis' || $request->uri->getSegment(1) == 'NeuralNetwork' ? 'active' : '' ?>">
+                class="nav-item dropdown <?= $request->uri->getSegment(2) == 'analysis' || $request->uri->getSegment(1) == 'NeuralNetwork' || $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-chart-line"></i>
                     <span>Analysis</span></a>
                 <ul class="dropdown-menu">
+                    <li class="<?= $request->uri->getSegment(2) == 'monthly' ? 'active' : '' ?>">
+                        <a class="nav-link" href="<?= base_url() ?>/main/monthly">Products</a>
+                    </li>
                     <li class="<?= $request->uri->getSegment(1) == 'NeuralNetwork' ? 'active' : '' ?>">
                         <a class="nav-link" href="<?= base_url() ?>/NeuralNetwork">Neural Network</a>
                         <!-- <a class="nav-link" href="<?= base_url() ?>/main/analysis/ann">Neural Network</a> -->
