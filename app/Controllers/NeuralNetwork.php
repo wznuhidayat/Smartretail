@@ -10,6 +10,16 @@ use Config\Services;
 
 class NeuralNetwork extends BaseController
 {
+    public $product = [
+        [4, 13, 6, 17],
+        [2, 12, 4, 18],
+        [0, 14, 2, 10],
+        [1, 11, 0, 12]
+    ];
+
+    public $target = array(
+        7, 21, 13, 12
+    );
     public function __construct()
     {
         // $this->M_admin = new M_admin();
@@ -26,24 +36,14 @@ class NeuralNetwork extends BaseController
 
         $data = [
             'title' => 'Neural Network',
-            // 'mse' => $this->mseOut,
-            // 'bobotv' => $this->bobotv,
-            // 'bobotw' => $this->bobotw,
-            // 'bias' => $this->bias,
-            // 'mseStd' => $this->mseStandard,
         ];
-        // dd($this->M_product_sold->getTarget());
         return view('admin/analysis/neural_network_view', $data);
     }
     public function getDataMonthRange()
     {
-        // return 'hi';
         $csrfName = csrf_token();
         $csrfHash = csrf_hash();
         $request = Services::request();
-        // return $request->getVar();
-        // return $request->getPost();
-        // $req = $request->getPost();
         $req = $request->getPost('data');
         $start_month = $req[1]['value']; // sesuai dengan method yang dikirim client
         $end_month = $req[2]['value']; // sesuai dengan method yang dikirim client
@@ -92,7 +92,10 @@ class NeuralNetwork extends BaseController
         $dataTargetTest = $this->getOnlyData($end_month, $yearStartTarget . '-' . $monthStartTarget);
         //get bobot V dan W
         $randomBobotV = $this->RandomBobot($dataTest);
-        $randomBobotW = $this->RandomBobot($dataTargetTest);
+        $randomBobotW = [];
+        for ($i = 0; $i < count($dataTest[0]); $i++) {
+            $randomBobotW[$i] = rand(0, 100) / 100;
+        }
         //bias
         $randbiasv = [];
         $randbiasw = [];
@@ -106,6 +109,8 @@ class NeuralNetwork extends BaseController
 
         $data = [
             'title' => 'Learning Ann',
+            'startMonth' => $start_month,
+            'endMonth' => $end_month,
             // 'product' => $newProduct,
             'datamonthly' => $data,
             'datatarget' => $dataTarget,
@@ -113,8 +118,9 @@ class NeuralNetwork extends BaseController
             'mse' => $mseStandard,
             'datatest' => $dataTest,
             'targettest' => $dataTargetTest,
-            // 'datatargettest' => $targetTest,
-            // 'test' => $data_test,
+            'dataNormalisasi' => $this->Normalisasi($dataTest),
+            'dataTargetNormalisasi' => $this->Normalisasi($dataTargetTest),
+            'month' => array_keys($dataTest[0]),
             'numHiddenLayer' => $gapMonth,
             'epoch' => $numEpoh,
             'learningrate' => $LR,
@@ -124,7 +130,9 @@ class NeuralNetwork extends BaseController
             'bobotbiasw' => $randbiasw,
 
         ];
-        return $this->response->setJSON((array) $data);
+        // var_dump($randomBobotW);
+        // return $this->response->setJSON((array) $data);
+        return view('admin/analysis/learning', $data);
     }
     public function getMonthSalesRange($start_month, $end_month)
     {
@@ -226,5 +234,45 @@ class NeuralNetwork extends BaseController
             array_push($data, $row);
         }
         return $data;
+    }
+
+    public function Normalisasi($data)
+    {
+        $dataRest = [];
+        $maxRest = array();
+        $minP = [];
+        $maxP = [];
+        // dd($data);
+        foreach ($data as $key => $value) {
+            $rest[$key] = [];
+            foreach ($value as $i => $val) {
+
+                array_push($rest[$key], intval($val));
+            }
+            array_push($dataRest, $rest[$key]);
+        }
+        $dataChangeRowColumn = [];
+        foreach ($dataRest as $key => $value) {
+            foreach ($value as $i => $val) {
+                $dataChangeRowColumn[$i][$key] =  $dataRest[$key][$i];
+            }
+        }
+        //get min and max
+        foreach ($dataChangeRowColumn as $key => $value) {
+            $minP[$key] = min($dataChangeRowColumn[$key]);
+            $maxP[$key] = max($dataChangeRowColumn[$key]);
+        }
+        //normalisasi 
+        $newMin = 0;
+        $newMax = 1;
+        // dd($maxRest);
+        $dataNormalisasi = [];
+        foreach ($dataRest as $key => $value) {
+            foreach ($value as $i => $val) {
+                $dataNormalisasi[$key][$i] = (($dataRest[$key][$i] - $minP[$i]) / ($maxP[$i] - $minP[$i]) * ($newMax - $newMin)) + $newMin;
+            }
+        }
+
+        return $dataNormalisasi;
     }
 }

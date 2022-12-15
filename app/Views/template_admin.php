@@ -3,3 +3,4 @@
 <?= $this->include('partials/sidebar') ?>
 <?= $this->renderSection('content') ?>
 <?= $this->include('partials/js') ?>
+<?= $this->renderSection('js') ?>
