@@ -139,29 +139,45 @@
                                 <div class="col-2">
                                     <div class="card-header">Bobot W</div>
                                     <div class="card-body">
-                                        <!-- <div class="table-responsive" style="height: 400px;">
-                                            <table class="table table-striped" id="table-1">
-                                                <thead>
-                                                    <tr>
-                                                        <th>W</th>
-                                                        <th>Y</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($bobotw as $key => $bobot) { ?>
-                                                    <tr>
 
-                                                        <td><input type="hidden" name="z"
-                                                                value="<?= $bobotw[$key][0] ?>">
-                                                            <?= $bobotw[$key][0]; ?></td>
-                                                    </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="button" class="btn btn-primary float-right " id="btn-learning"><i
+                                            class="fa fa-chart-line"></i>
+                                        Learning</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="accordion">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card-header">
+                                        <h4>Hasil Learning</h4>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label>Select Epoch</label>
+                                            <select class="form-control" id="list-epoch">
+                                                <option value="">-- Pilih Epooch --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body " id="allEpoch" style="height: 600px; overflow:scroll;">
+                                        <div class="accordion">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -183,37 +199,183 @@
 <?= $this->endSection() ?>
 <?= $this->section('js') ?>
 <script>
+var dataMonthly = JSON.parse('<?php echo json_encode($datamonthly) ?>');
 var dataNormalisasi = JSON.parse('<?php echo json_encode($dataNormalisasi) ?>');
+var dataTargetNormalisasi = JSON.parse('<?php echo json_encode($dataTargetNormalisasi) ?>');
 var bobotV = JSON.parse('<?php echo json_encode($bobotv) ?>');
 var bobotW = JSON.parse('<?php echo json_encode($bobotw) ?>');
 var biasV = JSON.parse('<?php echo json_encode($bobotbiasv) ?>');
 var biasW = JSON.parse('<?php echo json_encode($bobotbiasw) ?>');
+var learningRate = JSON.parse('<?php echo json_encode($learningrate) ?>');
+var epoch = JSON.parse('<?php echo json_encode($epoch) ?>');
+var standar_mse = JSON.parse('<?php echo json_encode($mse) ?>');
+$("#btn-learning").click(function() {});
+learn();
+// console.log(standar_mse);
+
+$('#list-epoch').on('change', function() {
+    var withoutNone = $("#" + this.value).siblings().not('.d-none');
+    withoutNone.addClass("d-none");
+    $("#" + this.value).removeClass("d-none");
+});
+
+function learn() {
+    var data = [];
+    var mse = 1;
+    for (let e = 1; e <= epoch; e++) {
+        $('#allEpoch').append(
+            `<div class="row accordion d-none" id="epoch_${e}" ></div>`);
+        if (mse > standar_mse) {
+            var data_per_item = [];
+            for (const key in dataNormalisasi) {
+                var dataHidden = [];
+                var dataHiddenActive = [];
+                for (let i = 0; i < biasV.length; i++) {
+
+                    // hitung data ke hidden per input
+                    dataHidden.push(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i]));
+                    // aktivasi data yang telah dihitung input ke hidden pernodenya
+                    dataHiddenActive.push(sigmoid(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i])));
+                }
+                //hitung data ke Y
+                dataForward = hitungZin(dataHiddenActive, bobotW, biasW);
+                //aktivasi data output Y
+                dataForwardActive = sigmoid(hitungZin(dataHiddenActive, bobotW, biasW));
+                //hitung mse output
+                er = dataTargetNormalisasi[key] - dataForwardActive;
+                mse = er * er;
+
+                //backpropagation
+                //hitung galat error
+                galError = (dataTargetNormalisasi[key] - dataForwardActive) * dataForwardActive * (1 -
+                    dataForwardActive);
+                // koreksi bobot / delta bobot w
+                correctBobotW = [];
+                for (let i = 0; i < dataHiddenActive.length; i++) {
+                    correctBobotW[i] = learningRate * galError * dataHiddenActive[i];
+
+                }
+
+                // koreksi bias / delta bias w
+                correctBiasW = learningRate * galError;
+                // gal Error faktor
+                galBobotW = [];
+                for (let index = 0; index < bobotW.length; index++) {
+                    galBobotW[index] = galError * bobotW[index];
+
+                }
 
 
-var dataHidden = [];
-var dataHiddenActive = [];
-//ambil data yang telah di normalisasi kemudian lakukan perhitungan ke hidden
-for (const key in dataNormalisasi) {
-    restHidden = [];
-    restActive = [];
-    for (let i = 0; i < biasV.length; i++) {
-        // hitung data ke hidden per input
-        restHidden.push(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i]));
-        // aktivasi data yang telah dihitung input ke hidden pernodenya
-        restActive.push(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i]));
+                //error hidden  error faktor
+                galErrorHidden = [];
+                for (let i = 0; i < galBobotW.length; i++) {
+                    galErrorHidden[i] = galBobotW[i] * dataHiddenActive[i] * (1 - dataHiddenActive[i]);
+
+                }
+
+                //Delta v
+                correctBobotV = [];
+                for (let i = 0; i < galErrorHidden.length; i++) {
+                    correctBobotV[i] = learningRate * galErrorHidden[i] * bobotV[key][i];
+                }
+
+                //Delta Bias V
+                correctBiasV = [];
+                for (let i = 0; i < galErrorHidden.length; i++) {
+                    correctBiasV[i] = learningRate * galErrorHidden[i];
+
+                }
+
+                // console.log(correctBiasV);
+
+                //Update bobot 
+                bobotW = updateBobot(bobotW, correctBobotW);
+                bobotV[key] = updateBobot(bobotV[key], correctBobotV);
+                biasV = updateBobot(biasV, correctBiasV);
+                biasW[0] = biasW[0] + correctBiasW;
+
+                rest_data = {
+                    product_id: dataMonthly[key].product_id,
+                    name_product: dataMonthly[key].name,
+                    data_hidden: dataHidden,
+                    data_hidden_active: dataHiddenActive,
+                    data_forward: dataForward,
+                    data_forward_active: dataForwardActive,
+                    mse: mse,
+                    gal_error: galError,
+                    delta_bobot_w: correctBobotW,
+                    delta_bias_w: correctBiasW,
+                    gal_bobot_w: galBobotW,
+                    gal_error_hidden: galErrorHidden,
+                    delta_bobot_v: correctBobotV,
+                    delta_bias_v: correctBiasV,
+                    new_bobot_w: bobotW,
+                    new_bobot_v: bobotV[key],
+                    new_bias_v: biasV,
+                    new_bias_w: biasW[0]
+                };
+                data_per_item.push(rest_data);
+
+                $(`#epoch_${e}`).append(`<div class="accordion">
+                                            <div class="accordion-header" role="button" data-toggle="collapse"
+                                                data-target="#epoch${e}data${key}" aria-expanded="true">
+                                                <h4> ${dataMonthly[key].product_id} - ${dataMonthly[key].name}</h4>
+                                            </div>
+                                            <div class="accordion-body collapse" id="epoch${e}data${key}"
+                                                data-parent="#accordion" style="">
+                                                <div class="row">
+                                                <div class="col-4">
+                                                <strong>Product ID</strong>
+                                                <p>${dataMonthly[key].product_id}</p>
+                                                <strong>Nama</strong>
+                                                <p>${dataMonthly[key].name}</p>
+                                                <strong>Target</strong>
+                                                <p>${dataTargetNormalisasi[key]}</p>
+                                                <strong>MSE</strong>
+                                                <p>${mse}</p>
+                                                <p><strong>Epoch Ke ${e}</strong></p>
+                                                </div>
+                                                <div class="col-8">
+                                                <strong>Data Input (X)</strong>
+                                                <p>${eachString(dataNormalisasi[key])}</p>
+                                                <strong>Data Hidden Layer (Z)</strong>
+                                                <p>${eachString(dataHiddenActive)}</p>
+                                                <strong>Data Output (Y)</strong>
+                                                <p><em>${dataForwardActive}</em></p>
+                                                <strong>New Bobot (V)</strong>
+                                                <p>${eachString(bobotV[key])}</p>
+                                                <strong>New Bias (V)</strong>
+                                                <p>${eachString(biasV)}</p>
+                                                <strong>New Bobot (W)</strong>
+                                                <p>${eachString(bobotW)}</p>
+                                                <strong>New Bias (W)</strong>
+                                                <p>${eachString(biasW)}</p>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>`)
+            }
+            data.push(data_per_item);
+            $('#list-epoch').append(`<option value="epoch_${e}">Number Epoch ${e}</option>`);
+        }
     }
-    dataHidden.push(restHidden);
-    dataHiddenActive.push(restActive);
 }
-var dataForward = [];
-var dataForwardActive = [];
-for (let i = 0; i < dataHiddenActive.length; i++) {
-    // console.log(dataHiddenActive[i]);
-    // console.log(bobotW[i]);
-    dataForward.push(hitungZin(dataForwardActive[i], bobotW, biasW));
 
+function eachString(data) {
+    str = ' ';
+    data.forEach(el => {
+        str += `<em class="mr-4"> ${el} </em> `;
+    });
+    return str;
 }
-console.log(bobotW);
+
+function updateBobot(oldBobot, newBobot) {
+    element = [];
+    for (let i = 0; i < newBobot.length; i++) {
+        element[i] = oldBobot[i] + newBobot[i];
+    }
+    return element;
+}
 
 function hitungZin(data, bobotV, biasHidden) {
     var z = 1 * biasHidden;

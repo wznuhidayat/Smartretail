@@ -106,12 +106,12 @@
                                         // echo $error[$h] . ' </br>'; 
                                         // $data = [
                                         //     $product,
-                                            // $bobotw,
-                                            // $bobotbiasv,
-                                            // $newV,
-                                            // $f_inkz,
-                                            // $newW,
-                                            // $f_inky,
+                                        // $bobotw,
+                                        // $bobotbiasv,
+                                        // $newV,
+                                        // $f_inkz,
+                                        // $newW,
+                                        // $f_inky,
                                         //     $errorOut,
                                         //     $errorHL,
                                         //     $target,
@@ -127,7 +127,7 @@
                                         $mseRest = $mseRest + pow($error[$i], 2);
                                     }
                                     $mseOut = $mseRest / count($error);
-                                    echo '<p class="text-dark">Epooch ke -' .$z.'  MSE : '. $mseOut . '</p></br></hr>';
+                                    echo '<p class="text-dark">Epooch ke -' . $z . '  MSE : ' . $mseOut . '</p></br></hr>';
                                 }
                             }
                             ?>
@@ -165,13 +165,13 @@
                                         ?>
 
                                         <?php for ($h = 0; $h < count($datatest); $h++) { ?>
-                                            <tr>
-                                                <th><?= $h + 1; ?></th>
-                                                <td><?= $test[$h]['product_id']; ?></td>
-                                                <td><?= $test[$h]['name']; ?></td>
-                                                <td><?= $test[$h]['target']; ?></td>
+                                        <tr>
+                                            <th><?= $h + 1; ?></th>
+                                            <td><?= $test[$h]['product_id']; ?></td>
+                                            <td><?= $test[$h]['name']; ?></td>
+                                            <td><?= $test[$h]['target']; ?></td>
 
-                                                <?php
+                                            <?php
                                                 for ($j = 0; $j < count($bobotv); $j++) {
                                                     $restv = 1 * $bobotbiasv[$j];
                                                     for ($i = 0; $i < count($datatest[$h]); $i++) {
@@ -205,7 +205,6 @@
                                                 // dd($datatargettest);
                                                 if (round($outdenorm) > $datatargettest[$h]) {
                                                     $selisih = round($outdenorm) - $datatargettest[$h];
-                                                    
                                                 } else {
                                                     $selisih = $datatargettest[$h] - round($outdenorm);
                                                     // if ($selisih == 0) {
@@ -275,7 +274,7 @@
                                                 $accuracy[$h] =  $datatargettest[$h] - $outdenorm;
 
                                                 ?>
-                                            </tr>
+                                        </tr>
                                         <?php } ?>
 
 
@@ -303,7 +302,9 @@
                         // $hasilrata2 = $AvgPresentasiError / count($datatest);
 
                         ?>
-                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan Backpropagation maka akurasi prediksi yang didapatkan adalah <span class="text-dark"><?= $accuracyOut; ?></span> </p>
+                        <p class="text-center mt-4">Setelah Dilakukan Proses Learning Menggunakan Jaringan Syaraf Tiruan
+                            Backpropagation maka akurasi prediksi yang didapatkan adalah <span
+                                class="text-dark"><?= $accuracyOut; ?></span> </p>
 
 
                     </div>

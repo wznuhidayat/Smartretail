@@ -82,14 +82,15 @@ class NeuralNetwork extends BaseController
         $monthStartTarget =  str_pad($mem_num, 2, '0', STR_PAD_LEFT);
         $yearStartTarget =  str_pad($mem_year, 2, '0', STR_PAD_LEFT);
         //get data target
-        $dataTarget = $this->getMonthSalesRange($end_month, $yearStartTarget . '-' . $monthStartTarget);
+        $dataTarget = $this->getMonthSalesRange($end_month, $yearStartTarget . '-' . $monthStartTarget, $data);
         //get epoch and learning rate dan mse
         $numEpoh = intval($this->request->getPost('epooch'));
         $LR = floatval($this->request->getPost('lr'));
         $mseStandard = 0.001;
         //get data and target
         $dataTest = $this->getOnlyData($start_month, $end_month);
-        $dataTargetTest = $this->getOnlyData($end_month, $yearStartTarget . '-' . $monthStartTarget);
+        $dataTargetTest = $this->getOnlyData($end_month, $yearStartTarget . '-' . $monthStartTarget, $data);
+        // return var_dump($dataTarget);
         //get bobot V dan W
         $randomBobotV = $this->RandomBobot($dataTest);
         $randomBobotW = [];
@@ -130,11 +131,11 @@ class NeuralNetwork extends BaseController
             'bobotbiasw' => $randbiasw,
 
         ];
-        // var_dump($randomBobotW);
+        // return var_dump($data);
         // return $this->response->setJSON((array) $data);
         return view('admin/analysis/learning', $data);
     }
-    public function getMonthSalesRange($start_month, $end_month)
+    public function getMonthSalesRange($start_month, $end_month, $data_range = null)
     {
         $salesData = $this->M_product_sold->getSalesData($start_month, $end_month);
         $dateStart = explode("-", $start_month);
@@ -144,7 +145,11 @@ class NeuralNetwork extends BaseController
         $monthStart = $dateStart[1];
         $monthEnd = $dateEnd[1];
         $gapMonth = (($yearEnd - $yearStart) * 12) + ($monthEnd - $monthStart);
-        $getDataGroupId = $this->M_product_sold->getAllProductSales($start_month, $end_month);
+        if ($data_range == null) {
+            $getDataGroupId = $this->M_product_sold->getAllProductSales($start_month, $end_month);
+        } else {
+            $getDataGroupId = $data_range;
+        }
         $data = [];
         foreach ($getDataGroupId as $key => $value) {
             $row = [];
@@ -193,7 +198,7 @@ class NeuralNetwork extends BaseController
         }
         return $bobot;
     }
-    public function getOnlyData($start_month, $end_month)
+    public function getOnlyData($start_month, $end_month, $data_range = null)
     {
         $salesData = $this->M_product_sold->getSalesData($start_month, $end_month);
         $dateStart = explode("-", $start_month);
@@ -203,7 +208,11 @@ class NeuralNetwork extends BaseController
         $monthStart = $dateStart[1];
         $monthEnd = $dateEnd[1];
         $gapMonth = (($yearEnd - $yearStart) * 12) + ($monthEnd - $monthStart);
-        $getDataGroupId = $this->M_product_sold->getAllProductSales($start_month, $end_month);
+        if ($data_range == null) {
+            $getDataGroupId = $this->M_product_sold->getAllProductSales($start_month, $end_month);
+        } else {
+            $getDataGroupId = $data_range;
+        }
         $data = [];
         foreach ($getDataGroupId as $key => $value) {
             $row = [];
