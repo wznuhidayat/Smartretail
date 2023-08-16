@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 06 Nov 2022 pada 19.15
--- Versi server: 8.0.31-0ubuntu0.20.04.1
--- Versi PHP: 7.4.30
+-- Waktu pembuatan: 16 Agu 2023 pada 16.21
+-- Versi server: 8.0.32-0ubuntu0.22.04.2
+-- Versi PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
