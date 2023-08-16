@@ -92,7 +92,12 @@ class NeuralNetwork extends BaseController
         $dataTargetTest = $this->getOnlyData($end_month, $yearStartTarget . '-' . $monthStartTarget, $data);
         // return var_dump($dataTarget);
         //get bobot V dan W
-        $randomBobotV = $this->RandomBobot($dataTest);
+        $randomBobotV = [];
+        for ($i = 0; $i < count($dataTest[0]); $i++) {
+            for ($j = 0; $j < count($dataTest[0]); $j++) {
+                $randomBobotV[$i][$j] = rand(0, 100) / 100;
+            }
+        }
         $randomBobotW = [];
         for ($i = 0; $i < count($dataTest[0]); $i++) {
             $randomBobotW[$i] = rand(0, 100) / 100;

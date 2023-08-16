@@ -1,5 +1,6 @@
 <?= $this->extend('template_admin') ?>
 <?= $this->section('content') ?>
+
 <!-- Main Content -->
 <div class="main-content">
     <section class="section">
@@ -145,12 +146,17 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <button type="button" class="btn btn-primary float-right " id="btn-learning"><i
-                                            class="fa fa-chart-line"></i>
+                                    <button type="button" class="btn btn-primary float-right " id="btn-learning"
+                                        onclick="learnNow()"><i class="fa fa-chart-line"></i>
                                         Learning</button>
                                 </div>
                             </div>
                             <div class="row">
+                                <img alt="image" src="<?= base_url() ?>/img/loader.svg" class="d-none"
+                                    id="animateLoader" style=" display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;">
                                 <div id="accordion">
 
                                 </div>
@@ -170,7 +176,9 @@
                                         </div>
                                     </div>
 
+
                                     <div class="card-body " id="allEpoch" style="height: 600px; overflow:scroll;">
+
                                         <div class="accordion">
 
                                         </div>
@@ -202,121 +210,138 @@
 var dataMonthly = JSON.parse('<?php echo json_encode($datamonthly) ?>');
 var dataNormalisasi = JSON.parse('<?php echo json_encode($dataNormalisasi) ?>');
 var dataTargetNormalisasi = JSON.parse('<?php echo json_encode($dataTargetNormalisasi) ?>');
-var bobotV = JSON.parse('<?php echo json_encode($bobotv) ?>');
 var bobotW = JSON.parse('<?php echo json_encode($bobotw) ?>');
+var bobotV = JSON.parse('<?php echo json_encode($bobotv) ?>');
 var biasV = JSON.parse('<?php echo json_encode($bobotbiasv) ?>');
 var biasW = JSON.parse('<?php echo json_encode($bobotbiasw) ?>');
 var learningRate = JSON.parse('<?php echo json_encode($learningrate) ?>');
 var epoch = JSON.parse('<?php echo json_encode($epoch) ?>');
 var standar_mse = JSON.parse('<?php echo json_encode($mse) ?>');
 $("#btn-learning").click(function() {});
-learn();
-// console.log(standar_mse);
-
-$('#list-epoch').on('change', function() {
-    var withoutNone = $("#" + this.value).siblings().not('.d-none');
-    withoutNone.addClass("d-none");
-    $("#" + this.value).removeClass("d-none");
+bobotV.forEach(function(item, index) {
+    for (var i = 0; i < item.length; i++) {
+        bobotV[index][i] = parseFloat(bobotV[index][i]);
+    }
 });
+
+
+
+
+function learnNow(params) {
+    $('#animateLoader').removeClass('d-none');
+    learn();
+    $('#animateLoader').addClass('d-none');
+}
 
 function learn() {
     var data = [];
-    var mse = 1;
-    for (let e = 1; e <= epoch; e++) {
-        $('#allEpoch').append(
-            `<div class="row accordion d-none" id="epoch_${e}" ></div>`);
-        if (mse > standar_mse) {
+    // var mse = 1;
+    // bobotV = bobotV.map(Number);
+    loop1:
+        for (let e = 1; e <= epoch; e++) {
+            mse = 1;
+            $('#allEpoch').append(
+                `<div class="row accordion d-none" id="epoch_${e}" ></div>`);
+            // if (parseFloat(mse) > parseFloat(standar_mse)) {
             var data_per_item = [];
-            for (const key in dataNormalisasi) {
-                var dataHidden = [];
-                var dataHiddenActive = [];
-                for (let i = 0; i < biasV.length; i++) {
+            loop2:
+                for (const key in dataNormalisasi) {
+                    var mse_rest = 0;
+                    var dataHidden = [];
+                    var dataHiddenActive = [];
+                    for (let i = 0; i < biasV.length; i++) {
 
-                    // hitung data ke hidden per input
-                    dataHidden.push(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i]));
-                    // aktivasi data yang telah dihitung input ke hidden pernodenya
-                    dataHiddenActive.push(sigmoid(hitungZin(dataNormalisasi[key], bobotV[key], biasV[i])));
-                }
-                //hitung data ke Y
-                dataForward = hitungZin(dataHiddenActive, bobotW, biasW);
-                //aktivasi data output Y
-                dataForwardActive = sigmoid(hitungZin(dataHiddenActive, bobotW, biasW));
-                //hitung mse output
-                er = dataTargetNormalisasi[key] - dataForwardActive;
-                mse = er * er;
+                        // hitung data ke hidden per input
+                        dataHidden.push(hitungZin(dataNormalisasi[key], bobotV[i], biasV[i]));
+                        // aktivasi data yang telah dihitung input ke hidden pernodenya
+                        dataHiddenActive.push(sigmoid(hitungZin(dataNormalisasi[key], bobotV[i], biasV[i])));
+                    }
 
-                //backpropagation
-                //hitung galat error
-                galError = (dataTargetNormalisasi[key] - dataForwardActive) * dataForwardActive * (1 -
-                    dataForwardActive);
-                // koreksi bobot / delta bobot w
-                correctBobotW = [];
-                for (let i = 0; i < dataHiddenActive.length; i++) {
-                    correctBobotW[i] = learningRate * galError * dataHiddenActive[i];
+                    //hitung data ke Y
+                    dataForward = hitungZin(dataHiddenActive, bobotW, biasW);
+                    //aktivasi data output Y
+                    dataForwardActive = sigmoid(hitungZin(dataHiddenActive, bobotW, biasW));
+                    //hitung mse output
+                    er = dataTargetNormalisasi[key] - dataForwardActive;
+                    mse_rest += parseFloat(er * er);
+                    console.log(mse)
+                    //backpropagation
+                    //hitung galat error
+                    galError = (dataTargetNormalisasi[key] - dataForwardActive) * dataForwardActive * (1 -
+                        dataForwardActive);
+                    // koreksi bobot / delta bobot w
+                    correctBobotW = [];
+                    for (let i = 0; i < dataHiddenActive.length; i++) {
+                        correctBobotW[i] = learningRate * galError * dataHiddenActive[i];
+                    }
 
-                }
+                    // koreksi bias / delta bias w
+                    correctBiasW = learningRate * galError;
+                    // gal Error faktor
+                    galBobotW = [];
+                    for (let index = 0; index < bobotW.length; index++) {
+                        galBobotW[index] = galError * bobotW[index];
 
-                // koreksi bias / delta bias w
-                correctBiasW = learningRate * galError;
-                // gal Error faktor
-                galBobotW = [];
-                for (let index = 0; index < bobotW.length; index++) {
-                    galBobotW[index] = galError * bobotW[index];
+                    }
 
-                }
+                    //error hidden  error faktor
+                    galErrorHidden = [];
+                    for (let i = 0; i < galBobotW.length; i++) {
+                        galErrorHidden[i] = galBobotW[i] * dataHiddenActive[i] * (1 - dataHiddenActive[i]);
 
+                    }
+                    // console.log(bobotV);
+                    //Delta v
+                    correctBobotV = [];
+                    for (let i = 0; i < galErrorHidden.length; i++) {
+                        var rest = [];
+                        for (let index = 0; index < bobotV.length; index++) {
+                            // correctBobotV[i][index] = learningRate * galErrorHidden[i] * bobotV[i][index];
+                            rest.push(learningRate * galErrorHidden[i] * bobotV[i][index]);
+                        }
+                        correctBobotV.push(rest);
+                    }
 
-                //error hidden  error faktor
-                galErrorHidden = [];
-                for (let i = 0; i < galBobotW.length; i++) {
-                    galErrorHidden[i] = galBobotW[i] * dataHiddenActive[i] * (1 - dataHiddenActive[i]);
+                    //Delta Bias V
+                    correctBiasV = [];
+                    for (let i = 0; i < galErrorHidden.length; i++) {
+                        correctBiasV[i] = learningRate * galErrorHidden[i];
+                    }
 
-                }
+                    //Update bobot 
+                    bobotW = updateBobot(bobotW, correctBobotW);
+                    // console.log(bobotV);
+                    for (const i in bobotV) {
+                        bobotV[i] = updateBobot(bobotV[i], correctBobotV);
+                    }
+                    // bobotV = updateBobot(bobotV, correctBobotV);
+                    biasV = updateBobot(biasV, correctBiasV);
+                    biasW[0] = biasW[0] + correctBiasW;
 
-                //Delta v
-                correctBobotV = [];
-                for (let i = 0; i < galErrorHidden.length; i++) {
-                    correctBobotV[i] = learningRate * galErrorHidden[i] * bobotV[key][i];
-                }
+                    rest_data = {
+                        product_id: dataMonthly[key].product_id,
+                        name_product: dataMonthly[key].name,
+                        data_hidden: dataHidden,
+                        data_hidden_active: dataHiddenActive,
+                        data_forward: dataForward,
+                        data_forward_active: dataForwardActive,
+                        mse: mse_rest,
+                        gal_error: galError,
+                        delta_bobot_w: correctBobotW,
+                        delta_bias_w: correctBiasW,
+                        gal_bobot_w: galBobotW,
+                        gal_error_hidden: galErrorHidden,
+                        delta_bobot_v: correctBobotV,
+                        delta_bias_v: correctBiasV,
+                        new_bobot_w: bobotW,
+                        new_bobot_v: bobotV,
+                        new_bias_v: biasV,
+                        new_bias_w: biasW[0]
+                    };
+                    // console.log(rest_data);
+                    data_per_item.push(rest_data);
 
-                //Delta Bias V
-                correctBiasV = [];
-                for (let i = 0; i < galErrorHidden.length; i++) {
-                    correctBiasV[i] = learningRate * galErrorHidden[i];
-
-                }
-
-                // console.log(correctBiasV);
-
-                //Update bobot 
-                bobotW = updateBobot(bobotW, correctBobotW);
-                bobotV[key] = updateBobot(bobotV[key], correctBobotV);
-                biasV = updateBobot(biasV, correctBiasV);
-                biasW[0] = biasW[0] + correctBiasW;
-
-                rest_data = {
-                    product_id: dataMonthly[key].product_id,
-                    name_product: dataMonthly[key].name,
-                    data_hidden: dataHidden,
-                    data_hidden_active: dataHiddenActive,
-                    data_forward: dataForward,
-                    data_forward_active: dataForwardActive,
-                    mse: mse,
-                    gal_error: galError,
-                    delta_bobot_w: correctBobotW,
-                    delta_bias_w: correctBiasW,
-                    gal_bobot_w: galBobotW,
-                    gal_error_hidden: galErrorHidden,
-                    delta_bobot_v: correctBobotV,
-                    delta_bias_v: correctBiasV,
-                    new_bobot_w: bobotW,
-                    new_bobot_v: bobotV[key],
-                    new_bias_v: biasV,
-                    new_bias_w: biasW[0]
-                };
-                data_per_item.push(rest_data);
-
-                $(`#epoch_${e}`).append(`<div class="accordion">
+                    $(`#epoch_${e}`).append(`<div class="accordion">
                                             <div class="accordion-header" role="button" data-toggle="collapse"
                                                 data-target="#epoch${e}data${key}" aria-expanded="true">
                                                 <h4> ${dataMonthly[key].product_id} - ${dataMonthly[key].name}</h4>
@@ -332,7 +357,7 @@ function learn() {
                                                 <strong>Target</strong>
                                                 <p>${dataTargetNormalisasi[key]}</p>
                                                 <strong>MSE</strong>
-                                                <p>${mse}</p>
+                                                <p>${mse_rest}</p>
                                                 <p><strong>Epoch Ke ${e}</strong></p>
                                                 </div>
                                                 <div class="col-8">
@@ -343,7 +368,7 @@ function learn() {
                                                 <strong>Data Output (Y)</strong>
                                                 <p><em>${dataForwardActive}</em></p>
                                                 <strong>New Bobot (V)</strong>
-                                                <p>${eachString(bobotV[key])}</p>
+                                               
                                                 <strong>New Bias (V)</strong>
                                                 <p>${eachString(biasV)}</p>
                                                 <strong>New Bobot (W)</strong>
@@ -353,13 +378,25 @@ function learn() {
                                                 </div>
                                                 </div>
                                             </div>
-                                        </div>`)
-            }
+                                        </div>`);
+                    // if (mse < standar_mse) {
+                    //     break loop1;
+                    // }
+
+                }
+            mse = (1 / dataNormalisasi.length) * (mse_rest);
+            console.log(mse, mse_rest);
             data.push(data_per_item);
             $('#list-epoch').append(`<option value="epoch_${e}">Number Epoch ${e}</option>`);
+            // }
         }
-    }
+    // console.log(data);
 }
+$('#list-epoch').on('change', function() {
+    var withoutNone = $("#" + this.value).siblings().not('.d-none');
+    withoutNone.addClass("d-none");
+    $("#" + this.value).removeClass("d-none");
+});
 
 function eachString(data) {
     str = ' ';
@@ -371,8 +408,8 @@ function eachString(data) {
 
 function updateBobot(oldBobot, newBobot) {
     element = [];
-    for (let i = 0; i < newBobot.length; i++) {
-        element[i] = oldBobot[i] + newBobot[i];
+    for (let i = 0; i < oldBobot.length; i++) {
+        element[i] = parseFloat(oldBobot[i]) + parseFloat(newBobot[i]);
     }
     return element;
 }
@@ -380,7 +417,7 @@ function updateBobot(oldBobot, newBobot) {
 function hitungZin(data, bobotV, biasHidden) {
     var z = 1 * biasHidden;
     for (let i = 0; i < data.length; i++) {
-        z += data[i] * bobotV[i];
+        z += data[i] * parseFloat(bobotV[i]);
     }
     return z;
 }

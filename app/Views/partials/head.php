@@ -35,6 +35,7 @@
     //     }
     // });
     </script>
+
     <!-- <link rel="stylesheet" href="<?= base_url() ?>/template/stisla/node_modules/imag  e-uploader/dist/image-uploader.min.css"> -->
     <!-- <link rel="stylesheet" href="<?= base_url() ?>/template/stisla/node_modules/dropzone/dist/min/dropzone.min.css"> -->
     <!-- Template CSS -->
